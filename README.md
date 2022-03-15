@@ -1,3 +1,2 @@
 # raytracing
-Kex-jobb - Raytracing CPU vs. GPU 
-test
+Kex-jobb - Raytracing CPU vs. GPU
