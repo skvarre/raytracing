@@ -1,6 +1,8 @@
 #ifndef VEC_H
 #define VEC_H
 
+#include <iostream>
+
 /**
  * Class describing a 3-dimensional vector 
  */
@@ -24,6 +26,10 @@ private:
     float m_y;
     float m_z;
 };
+
+std::ostream& operator<<(std::ostream &os, const Vec &v){
+    return os << "(" << v.x() << "," << v.y() << "," << v.z() << ")";
+}
 
 Vec operator-(const Vec &lhs, const Vec &rhs){
     return Vec(lhs.x() - rhs.x(), lhs.y() - rhs.y(), lhs.z() - rhs.z());
