@@ -3,6 +3,6 @@
 #include "Ray.h"
 
 int main() {
-    std::cout << Vec(1,2,3) - Vec(1,2,4) << std::endl;
+    std::cout << dot(Vec(1,2,2), Vec(2,3,3)) << std::endl;
     return 0;
 }
