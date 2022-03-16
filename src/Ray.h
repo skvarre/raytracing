@@ -13,6 +13,9 @@ public:
     //P(t) = A + tB
     Vec P(float t) { return m_A + t*m_B; }
 
+    Vec A() const { return m_A; }
+    Vec B() const { return m_B; }
+
 private:
     Vec m_A;
     Vec m_B;
