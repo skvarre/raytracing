@@ -33,4 +33,8 @@ Vec operator+(const Vec &lhs, const Vec &rhs) {
     return Vec(lhs.x() + rhs.x(), lhs.y() + rhs.y(), lhs.z() + rhs.z());
 }
 
+Vec operator*(float t, const Vec &v) {
+    return Vec(t*v.x(), t*v.y(), t*v.z());
+}
+
 #endif
