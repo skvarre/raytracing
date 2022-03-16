@@ -19,7 +19,8 @@ public:
     void x(float x) { m_x = x; }
     void y(float y) { m_y = y; }
     void z(float z) { m_z = z; }
-
+     
+    Vec operator-() const { return Vec(-m_x, -m_y, -m_z); }
 
 private:
     float m_x;
