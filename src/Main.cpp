@@ -22,9 +22,34 @@ float intersect_sphere(const Sphere & s, const Ray & r) {
     return -1;
 }
 
+Sphere SPHERE; 
+Vec LIGHT;
+
+Vec trace_ray(Ray & r) {
+    float t = intersect_sphere(SPHERE, r);
+    if(t == -1) return Vec();
+    Vec M = r.P(t);
+    Vec N = norm(M - SPHERE.c());
+    Vec toL = norm(LIGHT - M);
+    Vec toO = norm(r.A() - M);
+    Vec col = Vec(0.05,0.05,0.05);
+    col += 1 * std::max(dot(N, toL), 0.0f) * Vec(0,0,1);
+    col += 1 * 50 * std::max(dot(N, norm(toL + toO)), 0.0f) * Vec(1,1,1);
+    return col;
+}
+
+#define WIDTH 256
+#define HEIGHT 256
+
 int main() {
-    Sphere s = Sphere(Vec(0,0,2), 4);
-    Ray r = Ray(Vec(), Vec(0,0,5));
-    std::cout << intersect_sphere(s, r) << std::endl;
+    SPHERE = Sphere(Vec(0,0,2), 1000);
+    LIGHT = Vec(5,5,-10);
+    Vec v1 = Vec();
+    Vec v2 = Vec(0,0,2);
+    Ray r = Ray(v1, v2);
+
+    Vec test = trace_ray(r);
+    //Ray r = Ray(Vec(), Vec(0,0,5));
+    std::cout << test << std::endl;
     return 0;
 }

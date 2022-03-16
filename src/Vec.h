@@ -22,6 +22,11 @@ public:
     void z(float z) { m_z = z; }
      
     Vec operator-() const { return Vec(-m_x, -m_y, -m_z); }
+    Vec operator+=(const Vec & v) {
+        m_x += v.m_x;
+        m_y += v.m_y;
+        m_z += v.m_z;    
+    }
     float length();
 
 private:
