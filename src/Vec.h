@@ -25,7 +25,7 @@ public:
     Vec operator+=(const Vec & v) {
         m_x += v.m_x;
         m_y += v.m_y;
-        m_z += v.m_z;    
+        m_z += v.m_z;
     }
     float length();
 
@@ -49,6 +49,10 @@ Vec operator+(const Vec &lhs, const Vec &rhs) {
 
 Vec operator*(float t, const Vec &v) {
     return Vec(t*v.x(), t*v.y(), t*v.z());
+}
+
+Vec pow(const Vec &v, float x) {
+    return Vec(pow(v.x(),x), pow(v.y(),x), pow(v.z(),x));
 }
 
 float dot(const Vec & lhs, const Vec & rhs) {

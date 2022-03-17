@@ -36,21 +36,33 @@ Vec trace_ray(Ray & r) {
     Vec toO = norm(r.A() - M);
     Vec col = Vec(0.05,0.05,0.05);
     col += 1 * std::max(dot(N, toL), 0.0f) * Vec(0,0,1);
-    col += 1 * 50 * std::max(dot(N, norm(toL + toO)), 0.0f) * Vec(1,1,1);
+    col += pow((1 * std::max(dot(N, norm(toL + toO)), 0.0f) * Vec(1,1,1)), 50);
     return col;
 }
 
 #define WIDTH 400
 #define HEIGHT 400
 
+float clip(float f) {
+    if(f < 0.0) {
+        return 0.0;
+    }
+    if(f > 1.0) {
+        return 1.0*255.999;
+    }
+    return f*255.999;
+}
+
 void run() {
     std::cout << "P3\n" << WIDTH << ' ' << HEIGHT << "\n255\n";
     Vec O = Vec(0,0,-1);
     for(int i = 0; i < WIDTH; ++i) {
         for(int j = 0; j < HEIGHT; ++j) {
-            Ray r = Ray(O, norm(Vec(i,j,0) - O));
+            float I = -1.0 + (2.0*i/(WIDTH-1.0));
+            float J = -1.0 + (2.0*j/(HEIGHT-1.0));
+            Ray r = Ray(O, norm(Vec(I,J,0) - O));
             Vec col = trace_ray(r);
-            std::cout << col.x() << ' ' << col.y() << ' ' << col.z() << '\n';
+            std::cout << clip(col.x()) << ' ' << clip(col.y()) << ' ' << clip(col.z()) << '\n';
         }
     }
 }
@@ -60,11 +72,9 @@ int main() {
     LIGHT = Vec(5,5,-10);
     Ray r = Ray(Vec(0,0,-1), Vec(0,0,5));
     float test = intersect_sphere(SPHERE, r);
-    std::cout << test << std::endl;
-    
-    //run();
-    //Vec test = trace_ray(r);
-    //Ray r = Ray(Vec(), Vec(0,0,5));
+    //std::cout << pow(Vec(2,3,1), 2) << std::endl;
+
+    run();
     
     return 0;
 }
