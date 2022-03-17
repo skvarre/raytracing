@@ -4,6 +4,7 @@
 #include "Ray.h"
 #include "Sphere.h"
 
+//Check intersection of ray and sphere, solve for t
 float intersect_sphere(const Sphere & s, const Ray & r) {
     Vec Ac = r.A() - s.c();
     float a = dot(r.B(), r.B());
@@ -15,8 +16,9 @@ float intersect_sphere(const Sphere & s, const Ray & r) {
         float q = b < 0 ? (-b - dist_sqrt) / 2.0 : (-b + dist_sqrt) / 2.0;
         float t0 = q / a;
         float t1 = c / q;
+        float temp = t0;
         t0 = std::min(t0, t1);
-        t1 = std::max(t0, t1);
+        t1 = std::max(temp, t1);
         if(t1 >= 0) return t0 < 0 ? t1 : t0;
     }
     return -1;
@@ -27,7 +29,7 @@ Vec LIGHT;
 
 Vec trace_ray(Ray & r) {
     float t = intersect_sphere(SPHERE, r);
-    if(t == -1) return Vec();
+    if(t == -1) return Vec(-1,-1,-1);
     Vec M = r.P(t);
     Vec N = norm(M - SPHERE.c());
     Vec toL = norm(LIGHT - M);
@@ -38,18 +40,31 @@ Vec trace_ray(Ray & r) {
     return col;
 }
 
-#define WIDTH 256
-#define HEIGHT 256
+#define WIDTH 400
+#define HEIGHT 400
+
+void run() {
+    std::cout << "P3\n" << WIDTH << ' ' << HEIGHT << "\n255\n";
+    Vec O = Vec(0,0,-1);
+    for(int i = 0; i < WIDTH; ++i) {
+        for(int j = 0; j < HEIGHT; ++j) {
+            Ray r = Ray(O, norm(Vec(i,j,0) - O));
+            Vec col = trace_ray(r);
+            std::cout << col.x() << ' ' << col.y() << ' ' << col.z() << '\n';
+        }
+    }
+}
 
 int main() {
-    SPHERE = Sphere(Vec(0,0,2), 1000);
+    SPHERE = Sphere(Vec(0,0,1), 1);
     LIGHT = Vec(5,5,-10);
-    Vec v1 = Vec();
-    Vec v2 = Vec(0,0,2);
-    Ray r = Ray(v1, v2);
-
-    Vec test = trace_ray(r);
-    //Ray r = Ray(Vec(), Vec(0,0,5));
+    Ray r = Ray(Vec(0,0,-1), Vec(0,0,5));
+    float test = intersect_sphere(SPHERE, r);
     std::cout << test << std::endl;
+    
+    //run();
+    //Vec test = trace_ray(r);
+    //Ray r = Ray(Vec(), Vec(0,0,5));
+    
     return 0;
 }
