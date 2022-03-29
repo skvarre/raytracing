@@ -55,7 +55,7 @@ float clip(float f) {
 
 void run() {
     std::cout << "P3\n" << WIDTH << ' ' << HEIGHT << "\n255\n";
-    Vec O = Vec(0,0,-1);
+    Vec O = Vec(0,0,1);
     for(int i = 0; i < WIDTH; ++i) {
         for(int j = 0; j < HEIGHT; ++j) {
             float I = -1.0 + (2.0*i/(WIDTH-1.0));
@@ -68,9 +68,9 @@ void run() {
 }
 
 int main() {
-    SPHERE = Sphere(Vec(0,0,1), 1);
-    LIGHT = Vec(5,5,-10);
-    Ray r = Ray(Vec(0,0,-1), Vec(0,0,5));
+    SPHERE = Sphere(Vec(0,0,-1), 1);
+    LIGHT = Vec(-5,-5,10);
+    Ray r = Ray(Vec(0,0,1), Vec(0,0,5));
     float test = intersect_sphere(SPHERE, r);
     //std::cout << pow(Vec(2,3,1), 2) << std::endl;
 
