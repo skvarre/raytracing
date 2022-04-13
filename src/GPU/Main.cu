@@ -2,11 +2,14 @@
 #include <cmath>
 #include "Vec.h"
 #include "Ray.h"
-#include "Sphere.h"
+//#include "Sphere.h"
 
 #define WIDTH 400
 #define HEIGHT 400
 
+__constant__ int N;
+
+__device__
 //Check intersection of ray and sphere, solve for t
 float intersect_sphere(const Sphere & s, const Ray & r) {
     Vec Ac = r.A() - s.c();
@@ -27,8 +30,8 @@ float intersect_sphere(const Sphere & s, const Ray & r) {
     return -1;
 }
 
-__constant__ Sphere SPHERE;
-__constant__ Vec LIGHT;
+// __constant__ Sphere SPHERE;
+// __constant__ Vec LIGHT;
 
 __device__
 Vec trace_ray(Ray & r) {
@@ -47,7 +50,7 @@ Vec trace_ray(Ray & r) {
 float clip(float f) {
     if(f < 0.0) {
         return 0.0;
-    }
+    }    
     if(f > 1.0) {
         return 1.0*255.999;
     }
@@ -55,28 +58,42 @@ float clip(float f) {
 }
 
 __global__
-void run() {
-    std::cout << "P3\n" << WIDTH << ' ' << HEIGHT << "\n255\n";
+void run(Vec * res, ) {
+    
     Vec O = Vec(0,0,1);
+    int index = threadIdx.x;
+    int stride = blockDim.x;
+    for(int i = index; i < N; i += stride) {
+
+    }
     for(int i = 0; i < WIDTH; ++i) {
-        for(int j = 0; j < HEIGHT; ++j) {
+        for(int j = HEIGHT - 1; j >= 0; --j) {
             float I = -1.0 + (2.0*i/(WIDTH-1.0));
             float J = -1.0 + (2.0*j/(HEIGHT-1.0));
             Ray r = Ray(O, norm(Vec(I,J,0) - O));
             Vec col = trace_ray(r);
-            std::cout << clip(col.x()) << ' ' << clip(col.y()) << ' ' << clip(col.z()) << '\n';
+            // spara till res
+            //std::cout << clip(col.x()) << ' ' << clip(col.y()) << ' ' << clip(col.z()) << '\n';
         }
     }
 }
 
 int main() {
-    SPHERE = Sphere(Vec(0,0,-1), 1);
-    LIGHT = Vec(-5,-5,10);
-    Ray r = Ray(Vec(0,0,1), Vec(0,0,5));
-    float test = intersect_sphere(SPHERE, r);
+    
+    Sphere SPHERE = Sphere(Vec(0,0,-1), 1);
+    Vec LIGHT = Vec(-5,-5,10);
+    //Ray r = Ray(Vec(0,0,1), Vec(0,0,5));
+    //float test = intersect_sphere(SPHERE, r);
     //std::cout << pow(Vec(2,3,1), 2) << std::endl;
 
-    run<<<1,1>>>();
+    Vec * res;
+    N = HEIGHT * WIDTH;
+    cudaMallocManaged(&x, N*sizeof(float));
+
+    run<<<1,1>>>(res, SPHERE, LIGHT);
+
+    // här printar vi sen
+    std::cout << "P3\n" << WIDTH << ' ' << HEIGHT << "\n255\n";
     
     return 0;
 }
