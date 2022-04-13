@@ -1,5 +1,7 @@
+all: main
+
 ppm: main
 	./main > test.ppm
 
-main: Main.cpp
-	g++ Main.cpp -o main -I "../CPU"
+main: Main.cu
+	nvcc Main.cu -o main

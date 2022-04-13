@@ -2,15 +2,13 @@
 #include <cmath>
 #include "Vec.h"
 #include "Ray.h"
-//#include "Sphere.h"
+#include "Sphere.h"
 
 #define WIDTH 400
 #define HEIGHT 400
 
-__constant__ int N;
-
-__device__
 //Check intersection of ray and sphere, solve for t
+__device__
 float intersect_sphere(const Sphere & s, const Ray & r) {
     Vec Ac = r.A() - s.c();
     float a = dot(r.B(), r.B());
@@ -34,7 +32,7 @@ float intersect_sphere(const Sphere & s, const Ray & r) {
 // __constant__ Vec LIGHT;
 
 __device__
-Vec trace_ray(Ray & r) {
+Vec trace_ray(Ray & r, Sphere SPHERE, Vec LIGHT) {
     float t = intersect_sphere(SPHERE, r);
     if(t == -1) return Vec(-1,-1,-1);
     Vec M = r.P(t);
@@ -47,6 +45,7 @@ Vec trace_ray(Ray & r) {
     return col;
 }
 
+__host__
 float clip(float f) {
     if(f < 0.0) {
         return 0.0;
@@ -60,11 +59,15 @@ float clip(float f) {
 __global__
 void run(Vec * res, Sphere SPHERE, Vec LIGHT) {
     Vec O = Vec(0,0,1);
-    int index = threadIdx.x;
-    int stride = blockDim.x;
-    for(int i = index; i < N; i += stride) {
+    int i = threadIdx.x + blockIdx.x * blockDim.x;
+    int j = threadIdx.y + blockIdx.y * blockDim.y;
+    if(i >= 400 || j >= 400) return;
+    int index = j*400 + i;
+    float I = -1.0 + (2.0*i/(WIDTH-1.0));
+    float J = -1.0 + (2.0*j/(HEIGHT-1.0));
+    Ray r = Ray(O, norm(Vec(I,J,0) - O));
 
-    }
+    /*
     for(int i = 0; i < WIDTH; ++i) {
         for(int j = HEIGHT - 1; j >= 0; --j) {
             float I = -1.0 + (2.0*i/(WIDTH-1.0));
@@ -74,7 +77,9 @@ void run(Vec * res, Sphere SPHERE, Vec LIGHT) {
             // spara till res
             //std::cout << clip(col.x()) << ' ' << clip(col.y()) << ' ' << clip(col.z()) << '\n';
         }
-    }
+    }*/
+
+    res[index] = trace_ray(r, SPHERE, LIGHT);
 }
 
 int main() {
@@ -86,13 +91,19 @@ int main() {
     //std::cout << pow(Vec(2,3,1), 2) << std::endl;
 
     Vec * res;
-    N = HEIGHT * WIDTH;
-    cudaMallocManaged(&x, N*sizeof(Vec));
+    int N = HEIGHT * WIDTH;
+    cudaMallocManaged(&res, N*sizeof(Vec));
 
-    run<<<1,1>>>(res, SPHERE, LIGHT);
+    run<<<1,256>>>(res, SPHERE, LIGHT);
+    cudaDeviceSynchronize();
 
-    // här printar vi sen
     std::cout << "P3\n" << WIDTH << ' ' << HEIGHT << "\n255\n";
+    for(int i = 0; i < WIDTH; ++i) {
+        for(int j = HEIGHT - 1; j >= 0; --j) {
+            int index = j*400 + i;
+            std::cout << clip(res[index].x()) << ' ' << clip(res[index].y()) << ' ' << clip(res[index].z()) << '\n';
+        }
+    }
     
     return 0;
 }
