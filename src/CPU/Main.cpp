@@ -3,6 +3,7 @@
 #include "Vec.h"
 #include "Ray.h"
 #include "Sphere.h"
+#include <time.h>
 
 #define WIDTH 400
 #define HEIGHT 400
@@ -54,7 +55,7 @@ float clip(float f) {
 }
 
 void run() {
-    std::cout << "P3\n" << WIDTH << ' ' << HEIGHT << "\n255\n";
+    // std::cout << "P3\n" << WIDTH << ' ' << HEIGHT << "\n255\n";
     Vec O = Vec(0,0,1);
     for(int i = 0; i < WIDTH; ++i) {
         for(int j = HEIGHT - 1; j >= 0; --j) {
@@ -62,7 +63,7 @@ void run() {
             float J = -1.0 + (2.0*j/(HEIGHT-1.0));
             Ray r = Ray(O, norm(Vec(I,J,0) - O));
             Vec col = trace_ray(r);
-            std::cout << clip(col.x()) << ' ' << clip(col.y()) << ' ' << clip(col.z()) << '\n';
+            // std::cout << clip(col.x()) << ' ' << clip(col.y()) << ' ' << clip(col.z()) << '\n';
         }
     }
 }
@@ -71,11 +72,12 @@ int main() {
     SPHERE = Sphere(Vec(0,0,-1), 1);
     LIGHT = Vec(-5,-5,10);
 
-    //Ray r = Ray(Vec(0,0,1), Vec(0,0,5));
-    //float test = intersect_sphere(SPHERE, r);
-    //std::cout << pow(Vec(2,3,1), 2) << std::endl;
-
+    clock_t start, stop;
+    start = clock();
     run();
+    stop = clock();
+    double time_seconds = ((double)(stop - start) / CLOCKS_PER_SEC);
+    std::cout << "CPU time: " << time_seconds << std::endl;
     
     return 0;
 }

@@ -38,6 +38,7 @@ private:
     float m_z;
 };
 
+
 std::ostream& operator<<(std::ostream &os, const Vec &v){
     return os << "(" << v.x() << "," << v.y() << "," << v.z() << ")";
 }

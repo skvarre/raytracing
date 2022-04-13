@@ -3,6 +3,7 @@
 #include "Vec.h"
 #include "Ray.h"
 #include "Sphere.h"
+#include <chrono>
 
 #define WIDTH 400
 #define HEIGHT 400
@@ -78,8 +79,8 @@ void run(Vec * res, Sphere SPHERE, Vec LIGHT) {
             //std::cout << clip(col.x()) << ' ' << clip(col.y()) << ' ' << clip(col.z()) << '\n';
         }
     }*/
-
     res[index] = trace_ray(r, SPHERE, LIGHT);
+    //printf("%f, %f, %f\n", res[index].x(), res[index].y(), res[index].z());
 }
 
 int main() {
@@ -94,16 +95,26 @@ int main() {
     int N = HEIGHT * WIDTH;
     cudaMallocManaged(&res, N*sizeof(Vec));
 
-    run<<<1,256>>>(res, SPHERE, LIGHT);
+    dim3 blocks(400/8+1, 400/8+1);
+    dim3 threads(8, 8);
+
+    auto start = std::chrono::system_clock::now();
+
+    run<<<blocks,threads>>>(res, SPHERE, LIGHT);
     cudaDeviceSynchronize();
 
+    auto end = std::chrono::system_clock::now();
+    std::chrono::duration<double> elapsed = end - start;
+    std::cout << "GPU time: " << elapsed.count() << std::endl;
+
+    /*
     std::cout << "P3\n" << WIDTH << ' ' << HEIGHT << "\n255\n";
     for(int i = 0; i < WIDTH; ++i) {
         for(int j = HEIGHT - 1; j >= 0; --j) {
             int index = j*400 + i;
             std::cout << clip(res[index].x()) << ' ' << clip(res[index].y()) << ' ' << clip(res[index].z()) << '\n';
         }
-    }
+    }*/
     
     return 0;
 }
