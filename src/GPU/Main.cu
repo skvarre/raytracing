@@ -58,8 +58,7 @@ float clip(float f) {
 }
 
 __global__
-void run(Vec * res, ) {
-    
+void run(Vec * res, Sphere SPHERE, Vec LIGHT) {
     Vec O = Vec(0,0,1);
     int index = threadIdx.x;
     int stride = blockDim.x;
@@ -88,7 +87,7 @@ int main() {
 
     Vec * res;
     N = HEIGHT * WIDTH;
-    cudaMallocManaged(&x, N*sizeof(float));
+    cudaMallocManaged(&x, N*sizeof(Vec));
 
     run<<<1,1>>>(res, SPHERE, LIGHT);
 
