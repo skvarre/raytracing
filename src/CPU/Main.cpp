@@ -5,8 +5,8 @@
 #include "Sphere.h"
 #include <time.h>
 
-#define WIDTH 400
-#define HEIGHT 400
+#define WIDTH 500
+#define HEIGHT 500
 
 Sphere SPHERE; 
 Vec LIGHT;
@@ -55,7 +55,7 @@ float clip(float f) {
 }
 
 void run() {
-    // std::cout << "P3\n" << WIDTH << ' ' << HEIGHT << "\n255\n";
+    std::cout << "P3\n" << WIDTH << ' ' << HEIGHT << "\n255\n";
     Vec O = Vec(0,0,1);
     for(int i = 0; i < WIDTH; ++i) {
         for(int j = HEIGHT - 1; j >= 0; --j) {
@@ -63,7 +63,7 @@ void run() {
             float J = -1.0 + (2.0*j/(HEIGHT-1.0));
             Ray r = Ray(O, norm(Vec(I,J,0) - O));
             Vec col = trace_ray(r);
-            // std::cout << clip(col.x()) << ' ' << clip(col.y()) << ' ' << clip(col.z()) << '\n';
+            std::cout << clip(col.x()) << ' ' << clip(col.y()) << ' ' << clip(col.z()) << '\n';
         }
     }
 }
@@ -77,7 +77,7 @@ int main() {
     run();
     stop = clock();
     double time_seconds = ((double)(stop - start) / CLOCKS_PER_SEC);
-    std::cout << "CPU time: " << time_seconds << std::endl;
+    //std::cout << "CPU time: " << time_seconds << std::endl;
     
     return 0;
 }

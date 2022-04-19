@@ -5,7 +5,7 @@
 #include "Sphere.h"
 #include <chrono>
 
-#define WIDTH 400
+#define WIDTH  500
 #define HEIGHT 400
 
 //Check intersection of ray and sphere, solve for t
@@ -28,9 +28,6 @@ float intersect_sphere(const Sphere & s, const Ray & r) {
     }
     return -1;
 }
-
-// __constant__ Sphere SPHERE;
-// __constant__ Vec LIGHT;
 
 __device__
 Vec trace_ray(Ray & r, Sphere SPHERE, Vec LIGHT) {
@@ -62,41 +59,27 @@ void run(Vec * res, Sphere SPHERE, Vec LIGHT) {
     Vec O = Vec(0,0,1);
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     int j = threadIdx.y + blockIdx.y * blockDim.y;
-    if(i >= 400 || j >= 400) return;
-    int index = j*400 + i;
+    if(i >= WIDTH || j >= HEIGHT) return;
+    int index = j*WIDTH + i;
     float I = -1.0 + (2.0*i/(WIDTH-1.0));
     float J = -1.0 + (2.0*j/(HEIGHT-1.0));
     Ray r = Ray(O, norm(Vec(I,J,0) - O));
-
-    /*
-    for(int i = 0; i < WIDTH; ++i) {
-        for(int j = HEIGHT - 1; j >= 0; --j) {
-            float I = -1.0 + (2.0*i/(WIDTH-1.0));
-            float J = -1.0 + (2.0*j/(HEIGHT-1.0));
-            Ray r = Ray(O, norm(Vec(I,J,0) - O));
-            Vec col = trace_ray(r);
-            // spara till res
-            //std::cout << clip(col.x()) << ' ' << clip(col.y()) << ' ' << clip(col.z()) << '\n';
-        }
-    }*/
     res[index] = trace_ray(r, SPHERE, LIGHT);
-    //printf("%f, %f, %f\n", res[index].x(), res[index].y(), res[index].z());
 }
 
 int main() {
-    
+    // Setup
     Sphere SPHERE = Sphere(Vec(0,0,-1), 1);
     Vec LIGHT = Vec(-5,-5,10);
-    //Ray r = Ray(Vec(0,0,1), Vec(0,0,5));
-    //float test = intersect_sphere(SPHERE, r);
-    //std::cout << pow(Vec(2,3,1), 2) << std::endl;
+    int blocks_x = 8;
+    int blocks_y = 8;
 
     Vec * res;
     int N = HEIGHT * WIDTH;
     cudaMallocManaged(&res, N*sizeof(Vec));
-
-    dim3 blocks(400/8+1, 400/8+1);
-    dim3 threads(8, 8);
+    //Denna är lite spännande
+    dim3 blocks(WIDTH/blocks_x+1, HEIGHT/blocks_y+1);
+    dim3 threads(blocks_x, blocks_y);
 
     auto start = std::chrono::system_clock::now();
 
@@ -105,16 +88,17 @@ int main() {
 
     auto end = std::chrono::system_clock::now();
     std::chrono::duration<double> elapsed = end - start;
-    std::cout << "GPU time: " << elapsed.count() << std::endl;
+    // std::cout << "GPU time: " << elapsed.count() << std::endl;
 
-    /*
+    
+    // Pipe to file
     std::cout << "P3\n" << WIDTH << ' ' << HEIGHT << "\n255\n";
     for(int i = 0; i < WIDTH; ++i) {
         for(int j = HEIGHT - 1; j >= 0; --j) {
-            int index = j*400 + i;
+            int index = j*WIDTH + i;
             std::cout << clip(res[index].x()) << ' ' << clip(res[index].y()) << ' ' << clip(res[index].z()) << '\n';
         }
-    }*/
+    }
     
     return 0;
 }
