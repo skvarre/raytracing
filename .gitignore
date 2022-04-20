@@ -32,6 +32,6 @@
 *.app
 
 # Fuck python files
-*.py
+
 
 main
