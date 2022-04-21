@@ -68,6 +68,7 @@ Traced trace_ray(Ray & r) {
         return Traced();
     }
     Vec col = Vec(0.05,0.05,0.05);
+    //Shading osv.
     col += 1 * std::max(dot(N, toL), 0.0f) * object.col(); //Detta betyder färg 
     col += pow((1 * std::max(dot(N, norm(toL + toO)), 0.0f) * Vec(1,1,1)), 50);
     return Traced(object, M, N, col);

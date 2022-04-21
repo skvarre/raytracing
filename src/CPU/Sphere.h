@@ -3,7 +3,10 @@
 #include "Vec.h"
 /**
  * Description of a sphere using 3D-vector and radius
- * Col = COLOR, inte column :) 
+ * c - center
+ * r - radius
+ * col - color
+ * ref - reflection
  */
 class Sphere {
 public:
