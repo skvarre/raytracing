@@ -5,14 +5,18 @@
 #include "Sphere.h"
 #include "Traced.h"
 #include <chrono>
+#include <vector>
+#include <algorithm>
+#include <iterator>
 
-#define WIDTH  1200
-#define HEIGHT 1200
+#define WIDTH  400
+#define HEIGHT 400
 
 //Check intersection of ray and sphere, solve for t
 __device__
 float intersect_sphere(const Sphere & s, const Ray & r) {
     Vec Ac = r.A() - s.c();
+    printf("röven\n");
     float a = dot(r.B(), r.B());
     float b = 2 * dot(r.B(), Ac);
     float c = dot(Ac, Ac) - s.r() * s.r();
@@ -31,11 +35,18 @@ float intersect_sphere(const Sphere & s, const Ray & r) {
 }
 
 __device__
-Traced trace_ray(Ray & r, std::vector<Sphere> scene, Vec LIGHT) {
+Traced trace_ray(Ray & r, Sphere * scene, Vec LIGHT) {
     float t = INFINITY;
     float t_object;
     int object_i = 0;
-    int i = 0;
+    //int i = 0;
+    for(int i = 0; i < 4; ++i) {
+        t_object = intersect_sphere(scene[i], r);
+        if(t_object < t) {
+            t = t_object;
+            object_i = i;
+        }
+    }/*
     for(Sphere object : scene) {
         t_object = intersect_sphere(object, r);
         if(t_object < t) {
@@ -43,7 +54,7 @@ Traced trace_ray(Ray & r, std::vector<Sphere> scene, Vec LIGHT) {
             object_i = i;
         }
         ++i;
-    }
+    }*/
     if(t == INFINITY) {
         return Traced();
     }    
@@ -54,15 +65,22 @@ Traced trace_ray(Ray & r, std::vector<Sphere> scene, Vec LIGHT) {
     Vec N = norm(M - object.c());
     Vec toL = norm(LIGHT - M);
     Vec toO = norm(r.A() - M);
-    std::vector<float> l;
+    float l[3];
     int j = 0;
+    for(int i = 0; i < 4; ++i) {
+        if(i != object_i) {
+            l[j] = intersect_sphere(object, Ray(M + 0.0001 * N, toL));
+            ++j;
+        }
+    }/*
     for(Sphere object : scene) {
         if(j != object_i) {
             l.push_back(intersect_sphere(object, Ray(M + 0.0001 * N, toL)));
         }
         ++j;
-    }
-    if(l.size() != 0 && *std::min_element(l.begin(), l.end()) < INFINITY) {
+    }*/
+    
+    if(sizeof(l)/sizeof(*l) != 0 && *std::min_element(std::begin(l), std::end(l)) < INFINITY) {
         return Traced();
     }
     Vec col = Vec(0.05,0.05,0.05);
@@ -84,7 +102,8 @@ float clip(float f) {
 }
 
 __global__
-void run(Vec * res, std::vector<Sphere> scene, Vec LIGHT) {
+void run(Vec * res, Sphere * scene, Vec LIGHT) {
+    
     Vec O = Vec(0,0,2); //Camera position
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     int j = threadIdx.y + blockIdx.y * blockDim.y;
@@ -105,7 +124,7 @@ void run(Vec * res, std::vector<Sphere> scene, Vec LIGHT) {
         if(traced.m_col_ray.x() == -1 && traced.m_col_ray.y() == -1 && traced.m_col_ray.z() == -1) {
             break; 
         }
-        Sphere object = traced.m_sphere;
+        // Sphere object = traced.m_sphere;
         Vec M = traced.m_M;
         Vec N = traced.m_N; 
         Vec col_ray = traced.m_col_ray;
@@ -114,18 +133,22 @@ void run(Vec * res, std::vector<Sphere> scene, Vec LIGHT) {
         col += ref * col_ray;
         ref *= traced.m_sphere.ref();
         ++depth;
-        }
+    }
+    printf("röven\n");
+    printf("satan %f\n",col.x());
     res[index] = col;
 }
 
 int main() {
     // Setup
-    Sphere SPHERE = Sphere(Vec(0,0,-1), 1);
-    std::vector<Sphere> scene;
-    // scene.push_back(Sphere(Vec(-1,  0,  -1), .7, Vec(0.0, 0.000, 1.000), 0.5));  
-    // scene.push_back(Sphere(Vec( 0,  1,  -1), .7, Vec(0.5, 0.223, 0.500), 0.5));
-    // scene.push_back(Sphere(Vec( 0, -1,  -1), .7, Vec(1.0, 0.572, 0.184), 0.5));
-    // scene.push_back(Sphere(Vec( 1,  0,  -1), .7, Vec(0.0, 0.500, 1.000), 0.5));
+    // Sphere SPHERE = Sphere(Vec(0,0,-1), 1);
+    //Sphere * scene;
+    Sphere scene[4*sizeof(Sphere)];
+    //cudaMallocManaged(&scene, 4*sizeof(Sphere));
+    scene[0] = Sphere(Vec(-1,  0,  -1), .7, Vec(0.0, 0.000, 1.000), 0.5);
+    scene[1] = Sphere(Vec( 0,  1,  -1), .7, Vec(0.5, 0.223, 0.500), 0.5);
+    scene[2] = Sphere(Vec( 0, -1,  -1), .7, Vec(1.0, 0.572, 0.184), 0.5);
+    scene[3] = Sphere(Vec( 1,  0,  -1), .7, Vec(0.0, 0.500, 1.000), 0.5);
     Vec LIGHT = Vec(-5,-5,10);
     int blocks_x = 8;
     int blocks_y = 8;
@@ -144,9 +167,11 @@ int main() {
 
     auto end = std::chrono::system_clock::now();
     std::chrono::duration<double> elapsed = end - start;
-    // std::cout << "GPU time: " << elapsed.count() << std::endl;
-
-    
+    // std::cout << "GPU time: " << elapsed.count() << " seconds" << std::endl; !(THE MOUSE)
+    std::cout << "hej\n";
+    for(int i = 0; i < 1000; ++i) {
+        std::cout << res[i] << std::endl;
+    }
     // Pipe to file
     std::cout << "P3\n" << WIDTH << ' ' << HEIGHT << "\n255\n";
     for(int i = 0; i < WIDTH; ++i) {
