@@ -16,7 +16,6 @@
 __device__
 float intersect_sphere(const Sphere & s, const Ray & r) {
     Vec Ac = r.A() - s.c();
-    printf("röven\n");
     float a = dot(r.B(), r.B());
     float b = 2 * dot(r.B(), Ac);
     float c = dot(Ac, Ac) - s.r() * s.r();
@@ -134,8 +133,8 @@ void run(Vec * res, Sphere * scene, Vec LIGHT) {
         ref *= traced.m_sphere.ref();
         ++depth;
     }
-    printf("röven\n");
-    printf("satan %f\n",col.x());
+
+
     res[index] = col;
 }
 
@@ -143,8 +142,8 @@ int main() {
     // Setup
     // Sphere SPHERE = Sphere(Vec(0,0,-1), 1);
     //Sphere * scene;
-    Sphere scene[4*sizeof(Sphere)];
-    //cudaMallocManaged(&scene, 4*sizeof(Sphere));
+    Sphere * scene;
+    cudaMallocManaged(&scene, 4*sizeof(Sphere));
     scene[0] = Sphere(Vec(-1,  0,  -1), .7, Vec(0.0, 0.000, 1.000), 0.5);
     scene[1] = Sphere(Vec( 0,  1,  -1), .7, Vec(0.5, 0.223, 0.500), 0.5);
     scene[2] = Sphere(Vec( 0, -1,  -1), .7, Vec(1.0, 0.572, 0.184), 0.5);
@@ -161,17 +160,14 @@ int main() {
     dim3 threads(blocks_x, blocks_y);
 
     auto start = std::chrono::system_clock::now();
-
+    
     run<<<blocks,threads>>>(res, scene, LIGHT);
     cudaDeviceSynchronize();
 
     auto end = std::chrono::system_clock::now();
     std::chrono::duration<double> elapsed = end - start;
-    // std::cout << "GPU time: " << elapsed.count() << " seconds" << std::endl; !(THE MOUSE)
-    std::cout << "hej\n";
-    for(int i = 0; i < 1000; ++i) {
-        std::cout << res[i] << std::endl;
-    }
+    std::cerr << "GPU time: " << elapsed.count() << " seconds" << std::endl;
+    
     // Pipe to file
     std::cout << "P3\n" << WIDTH << ' ' << HEIGHT << "\n255\n";
     for(int i = 0; i < WIDTH; ++i) {
