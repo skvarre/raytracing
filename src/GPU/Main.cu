@@ -39,6 +39,7 @@ Traced trace_ray(Ray & r, Sphere * scene, Vec LIGHT) {
     float t = INFINITY;
     float t_object;
     int object_i = 0;
+    
     for(int i = 0; i < 4; ++i) {
         t_object = intersect_sphere(scene[i], r);
         if(t_object < t) {
@@ -118,7 +119,7 @@ void run(Vec * res, Sphere * scene, Vec LIGHT) {
 
 int main() {
     // Setup
-    Sphere * scene = makeScene(1);
+    Sphere * scene = makeScene(0);
     Vec * res;
     Vec LIGHT = Vec(-5,-5,10);
     int blocks_x = 8;
@@ -141,6 +142,7 @@ int main() {
     
 
     // Pipe to file
+    
     std::cout << "P3\n" << WIDTH << ' ' << HEIGHT << "\n255\n";
     for(int i = 0; i < WIDTH; ++i) {
         for(int j = HEIGHT - 1; j >= 0; --j) {
@@ -148,7 +150,7 @@ int main() {
             std::cout << clip(res[index].x()) << ' ' << clip(res[index].y()) << ' ' << clip(res[index].z()) << '\n';
         }
     }
-
+    
     // Cleanup
     cudaFree(scene);
     cudaFree(res);
