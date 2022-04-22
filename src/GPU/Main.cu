@@ -1,16 +1,17 @@
-#include <iostream>
-#include <cmath>
 #include "Vec.h"
 #include "Ray.h"
 #include "Sphere.h"
 #include "Traced.h"
+#include "Scene.h"
+#include <iostream>
+#include <cmath>
 #include <chrono>
 #include <vector>
 #include <algorithm>
 #include <iterator>
 
-#define WIDTH  400
-#define HEIGHT 400
+#define WIDTH  800
+#define HEIGHT 800
 
 //Check intersection of ray and sphere, solve for t
 __device__
@@ -38,28 +39,17 @@ Traced trace_ray(Ray & r, Sphere * scene, Vec LIGHT) {
     float t = INFINITY;
     float t_object;
     int object_i = 0;
-    //int i = 0;
     for(int i = 0; i < 4; ++i) {
         t_object = intersect_sphere(scene[i], r);
         if(t_object < t) {
             t = t_object;
             object_i = i;
         }
-    }/*
-    for(Sphere object : scene) {
-        t_object = intersect_sphere(object, r);
-        if(t_object < t) {
-            t = t_object;
-            object_i = i;
-        }
-        ++i;
-    }*/
+    }
     if(t == INFINITY) {
         return Traced();
     }    
     Sphere object = scene[object_i];
-    //float t = intersect_sphere(SPHERE, r);
-    //if(t == -1) return Vec(-1,-1,-1);
     Vec M = r.P(t);
     Vec N = norm(M - object.c());
     Vec toL = norm(LIGHT - M);
@@ -71,19 +61,12 @@ Traced trace_ray(Ray & r, Sphere * scene, Vec LIGHT) {
             l[j] = intersect_sphere(object, Ray(M + 0.0001 * N, toL));
             ++j;
         }
-    }/*
-    for(Sphere object : scene) {
-        if(j != object_i) {
-            l.push_back(intersect_sphere(object, Ray(M + 0.0001 * N, toL)));
-        }
-        ++j;
-    }*/
-    
+    }    
     if(sizeof(l)/sizeof(*l) != 0 && *std::min_element(std::begin(l), std::end(l)) < INFINITY) {
         return Traced();
     }
     Vec col = Vec(0.05,0.05,0.05);
-    //Shading osv.
+    // Shading osv.
     col += 1 * std::max(dot(N, toL), 0.0f) * object.col();
     col += pow((1 * std::max(dot(N, norm(toL + toO)), 0.0f) * Vec(1,1,1)), 50);
     return Traced(object, M, N, col);
@@ -102,8 +85,7 @@ float clip(float f) {
 
 __global__
 void run(Vec * res, Sphere * scene, Vec LIGHT) {
-    
-    Vec O = Vec(0,0,2); //Camera position
+    Vec O = Vec(0,0,2); // Camera position
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     int j = threadIdx.y + blockIdx.y * blockDim.y;
     if(i >= WIDTH || j >= HEIGHT) return;
@@ -111,7 +93,6 @@ void run(Vec * res, Sphere * scene, Vec LIGHT) {
     Vec col; 
     float I = -1.0 + (2.0*i/(WIDTH-1.0));
     float J = -1.0 + (2.0*j/(HEIGHT-1.0));
-    //Ray r = Ray(O, norm(Vec(I,J,0) - O));
     Vec D = norm(Vec(I,J,0) - O);
     Vec rayO = O;
     Vec rayD = D;
@@ -123,7 +104,6 @@ void run(Vec * res, Sphere * scene, Vec LIGHT) {
         if(traced.m_col_ray.x() == -1 && traced.m_col_ray.y() == -1 && traced.m_col_ray.z() == -1) {
             break; 
         }
-        // Sphere object = traced.m_sphere;
         Vec M = traced.m_M;
         Vec N = traced.m_N; 
         Vec col_ray = traced.m_col_ray;
@@ -133,31 +113,22 @@ void run(Vec * res, Sphere * scene, Vec LIGHT) {
         ref *= traced.m_sphere.ref();
         ++depth;
     }
-
-
     res[index] = col;
 }
 
 int main() {
     // Setup
-    // Sphere SPHERE = Sphere(Vec(0,0,-1), 1);
-    //Sphere * scene;
-    Sphere * scene;
-    cudaMallocManaged(&scene, 4*sizeof(Sphere));
-    scene[0] = Sphere(Vec(-1,  0,  -1), .7, Vec(0.0, 0.000, 1.000), 0.5);
-    scene[1] = Sphere(Vec( 0,  1,  -1), .7, Vec(0.5, 0.223, 0.500), 0.5);
-    scene[2] = Sphere(Vec( 0, -1,  -1), .7, Vec(1.0, 0.572, 0.184), 0.5);
-    scene[3] = Sphere(Vec( 1,  0,  -1), .7, Vec(0.0, 0.500, 1.000), 0.5);
+    Sphere * scene = makeScene(1);
+    Vec * res;
     Vec LIGHT = Vec(-5,-5,10);
     int blocks_x = 8;
     int blocks_y = 8;
-
-    Vec * res;
     int N = HEIGHT * WIDTH;
     cudaMallocManaged(&res, N*sizeof(Vec));
-    //Denna är lite spännande
+    // Denna är lite spännande
     dim3 blocks(WIDTH/blocks_x+1, HEIGHT/blocks_y+1);
     dim3 threads(blocks_x, blocks_y);
+    
 
     auto start = std::chrono::system_clock::now();
     
@@ -168,6 +139,7 @@ int main() {
     std::chrono::duration<double> elapsed = end - start;
     std::cerr << "GPU time: " << elapsed.count() << " seconds" << std::endl;
     
+
     // Pipe to file
     std::cout << "P3\n" << WIDTH << ' ' << HEIGHT << "\n255\n";
     for(int i = 0; i < WIDTH; ++i) {
@@ -176,6 +148,10 @@ int main() {
             std::cout << clip(res[index].x()) << ' ' << clip(res[index].y()) << ' ' << clip(res[index].z()) << '\n';
         }
     }
-    
+
+    // Cleanup
+    cudaFree(scene);
+    cudaFree(res);
+
     return 0;
 }

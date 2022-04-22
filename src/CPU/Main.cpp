@@ -1,15 +1,16 @@
-#include <iostream>
-#include <cmath>
 #include "Vec.h"
 #include "Ray.h"
 #include "Sphere.h"
 #include "Traced.h"
+#include <algorithm>
+#include <iostream>
+#include <cmath>
 #include <time.h>
 #include <vector>
-#include <algorithm>
+#include <chrono>
 
-#define WIDTH 400
-#define HEIGHT 400
+#define WIDTH  800
+#define HEIGHT 800
 
 Sphere SPHERE; 
 Vec LIGHT;
@@ -98,7 +99,7 @@ float clip(float f) {
 }
 
 void run() {
-    std::cout << "P3\n" << WIDTH << ' ' << HEIGHT << "\n255\n";
+    //std::cout << "P3\n" << WIDTH << ' ' << HEIGHT << "\n255\n";
     Vec O = Vec(0,0,2);
     for(int i = 0; i < WIDTH; ++i) {
         for(int j = HEIGHT - 1; j >= 0; --j) {
@@ -126,7 +127,7 @@ void run() {
                 ref *= traced.m_sphere.ref();
                 ++depth;
             }
-            std::cout << clip(col.x()) << ' ' << clip(col.y()) << ' ' << clip(col.z()) << '\n';
+            //std::cout << clip(col.x()) << ' ' << clip(col.y()) << ' ' << clip(col.z()) << '\n';
         } 
     }
 }
@@ -142,12 +143,12 @@ int main() {
     scene.push_back(Sphere(Vec( 0, -1,  -1), .7, Vec(1.0, 0.572, 0.184), 0.5));
     scene.push_back(Sphere(Vec( 1,  0,  -1), .7, Vec(0.0, 0.500, 1.000), 0.5));
 
-    clock_t start, stop;
-    start = clock();
+    auto start = std::chrono::system_clock::now();
     run();
-    stop = clock();
-    double time_seconds = ((double)(stop - start) / CLOCKS_PER_SEC);
-    std::cerr << "CPU time: " << time_seconds << " SEGUNDOS SEÑOR" << std::endl;
+    auto end = std::chrono::system_clock::now();
+    std::chrono::duration<double> elapsed = end - start;
+    std::cerr << "CPU time: " << elapsed.count() << " seconds" << std::endl;
+
     
     return 0;
 }
