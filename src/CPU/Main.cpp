@@ -9,8 +9,8 @@
 #include <vector>
 #include <chrono>
 
-#define WIDTH  800
-#define HEIGHT 800
+#define WIDTH  400
+#define HEIGHT 400
 
 Sphere SPHERE; 
 Vec LIGHT;

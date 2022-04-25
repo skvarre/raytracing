@@ -10,8 +10,8 @@
 #include <algorithm>
 #include <iterator>
 
-#define WIDTH  800
-#define HEIGHT 800
+#define WIDTH  600
+#define HEIGHT 600
 
 //Check intersection of ray and sphere, solve for t
 __device__
@@ -35,12 +35,12 @@ float intersect_sphere(const Sphere & s, const Ray & r) {
 }
 
 __device__
-Traced trace_ray(Ray & r, Sphere * scene, Vec LIGHT) {
+Traced trace_ray(Ray & r, Sphere * scene, Vec LIGHT, int number_of_spheres) {
     float t = INFINITY;
     float t_object;
     int object_i = 0;
     
-    for(int i = 0; i < 4; ++i) {
+    for(int i = 0; i < number_of_spheres; ++i) {
         t_object = intersect_sphere(scene[i], r);
         if(t_object < t) {
             t = t_object;
@@ -57,7 +57,7 @@ Traced trace_ray(Ray & r, Sphere * scene, Vec LIGHT) {
     Vec toO = norm(r.A() - M);
     float l[3];
     int j = 0;
-    for(int i = 0; i < 4; ++i) {
+    for(int i = 0; i < number_of_spheres; ++i) {
         if(i != object_i) {
             l[j] = intersect_sphere(object, Ray(M + 0.0001 * N, toL));
             ++j;
@@ -85,7 +85,7 @@ float clip(float f) {
 }
 
 __global__
-void run(Vec * res, Sphere * scene, Vec LIGHT) {
+void run(Vec * res, Sphere * scene, Vec LIGHT, int number_of_spheres) {
     Vec O = Vec(0,0,2); // Camera position
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     int j = threadIdx.y + blockIdx.y * blockDim.y;
@@ -101,7 +101,7 @@ void run(Vec * res, Sphere * scene, Vec LIGHT) {
     float ref = 1;
     while(depth < 5) {
         Ray OD = Ray(rayO, rayD);
-        Traced traced = trace_ray(OD, scene, LIGHT);
+        Traced traced = trace_ray(OD, scene, LIGHT, number_of_spheres);
         if(traced.m_col_ray.x() == -1 && traced.m_col_ray.y() == -1 && traced.m_col_ray.z() == -1) {
             break; 
         }
@@ -118,22 +118,26 @@ void run(Vec * res, Sphere * scene, Vec LIGHT) {
 }
 
 int main() {
-    // Setup
-    Sphere * scene = makeScene(0);
+    // Setup for making spheres
+    int number_of_spheres = 9;
+    Sphere * scene = makeScene(number_of_spheres);
+    //All pixels
     Vec * res;
+    //Light-source
     Vec LIGHT = Vec(-5,-5,10);
+    //Setup for cuda-initialization
     int blocks_x = 8;
     int blocks_y = 8;
     int N = HEIGHT * WIDTH;
     cudaMallocManaged(&res, N*sizeof(Vec));
-    // Denna är lite spännande
+    
     dim3 blocks(WIDTH/blocks_x+1, HEIGHT/blocks_y+1);
     dim3 threads(blocks_x, blocks_y);
     
-
+    //Time-benchmarking
     auto start = std::chrono::system_clock::now();
     
-    run<<<blocks,threads>>>(res, scene, LIGHT);
+    run<<<blocks,threads>>>(res, scene, LIGHT, number_of_spheres);
     cudaDeviceSynchronize();
 
     auto end = std::chrono::system_clock::now();
