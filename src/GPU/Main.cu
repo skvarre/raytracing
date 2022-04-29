@@ -10,8 +10,8 @@
 #include <algorithm>
 #include <iterator>
 
-#define WIDTH  600
-#define HEIGHT 600
+#define WIDTH  1200
+#define HEIGHT 1200
 
 //Check intersection of ray and sphere, solve for t
 __device__
@@ -133,20 +133,23 @@ int main() {
     
     dim3 blocks(WIDTH/blocks_x+1, HEIGHT/blocks_y+1);
     dim3 threads(blocks_x, blocks_y);
-    
-    //Time-benchmarking
+
+    // Time-benchmarking
+    int test_runs = 1000;
     auto start = std::chrono::system_clock::now();
     
-    run<<<blocks,threads>>>(res, scene, LIGHT, number_of_spheres);
-    cudaDeviceSynchronize();
+    for(int i = 0; i < test_runs; ++i) {
+        run<<<blocks,threads>>>(res, scene, LIGHT, number_of_spheres);
+        cudaDeviceSynchronize();
+    }
 
     auto end = std::chrono::system_clock::now();
     std::chrono::duration<double> elapsed = end - start;
-    std::cerr << "GPU time: " << elapsed.count() << " seconds" << std::endl;
+    std::cerr << "GPU time: " << elapsed.count()/test_runs << " seconds" << std::endl;
     
 
     // Pipe to file
-    
+    /*
     std::cout << "P3\n" << WIDTH << ' ' << HEIGHT << "\n255\n";
     for(int i = 0; i < WIDTH; ++i) {
         for(int j = HEIGHT - 1; j >= 0; --j) {
@@ -154,7 +157,7 @@ int main() {
             std::cout << clip(res[index].x()) << ' ' << clip(res[index].y()) << ' ' << clip(res[index].z()) << '\n';
         }
     }
-    
+    */
     // Cleanup
     cudaFree(scene);
     cudaFree(res);

@@ -1,5 +1,5 @@
 ppm: main
-	./main > test.ppm
+	./main
 
-main: Main.cpp Vec.h Ray.h Sphere.h
+main: Main.cpp Vec.h Ray.h Sphere.h Scene.h
 	g++ Main.cpp -o main

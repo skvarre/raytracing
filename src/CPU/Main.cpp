@@ -8,9 +8,10 @@
 #include <time.h>
 #include <vector>
 #include <chrono>
+#include "Scene.h"
 
-#define WIDTH  400
-#define HEIGHT 400
+#define WIDTH  40
+#define HEIGHT 40
 
 Sphere SPHERE; 
 Vec LIGHT;
@@ -133,22 +134,20 @@ void run() {
 }
 
 int main() {
-    //SPHERE = Sphere(Vec(0,0,-1), 1);
-    LIGHT = Vec(-5,-5,10);/*
-    for(int i = 0; i < 1000; i++){
-        scene.push_back(Sphere(Vec(i*0.1,2*0.5*i*0.5,-3), .1, Vec(i/256,4,1), 0.5));  
-    }*/
-    scene.push_back(Sphere(Vec(-1,  0,  -1), .7, Vec(0.0, 0.000, 1.000), 0.5));  
-    scene.push_back(Sphere(Vec( 0,  1,  -1), .7, Vec(0.5, 0.223, 0.500), 0.5));
-    scene.push_back(Sphere(Vec( 0, -1,  -1), .7, Vec(1.0, 0.572, 0.184), 0.5));
-    scene.push_back(Sphere(Vec( 1,  0,  -1), .7, Vec(0.0, 0.500, 1.000), 0.5));
+    LIGHT = Vec(-5,-5,10);
+    
+    makeScene(4, scene);
 
+    // Time-benchmarking
+    int test_runs = 1;
     auto start = std::chrono::system_clock::now();
-    run();
+    for(int i = 0; i < test_runs; ++i) {
+        run();
+    }
+    
     auto end = std::chrono::system_clock::now();
     std::chrono::duration<double> elapsed = end - start;
-    std::cerr << "CPU time: " << elapsed.count() << " seconds" << std::endl;
-
+    std::cerr << "CPU time: " << elapsed.count()/test_runs << " seconds" << std::endl;
     
     return 0;
 }
