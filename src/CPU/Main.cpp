@@ -148,6 +148,6 @@ int main() {
     auto end = std::chrono::system_clock::now();
     std::chrono::duration<double> elapsed = end - start;
     std::cerr << "CPU time: " << elapsed.count()/test_runs << " seconds" << std::endl;
-    
+
     return 0;
 }
