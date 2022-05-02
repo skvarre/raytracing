@@ -9,9 +9,10 @@
 #include <vector>
 #include <chrono>
 #include "Scene.h"
-
-#define WIDTH  40
-#define HEIGHT 40
+#include <chrono>
+// 400 800 1600 3200
+#define WIDTH  8
+#define HEIGHT 8
 
 Sphere SPHERE; 
 Vec LIGHT;
@@ -136,10 +137,10 @@ void run() {
 int main() {
     LIGHT = Vec(-5,-5,10);
     
-    makeScene(4, scene);
+    makeScene(1, scene);
 
     // Time-benchmarking
-    int test_runs = 1;
+    int test_runs = 50; // 50
     auto start = std::chrono::system_clock::now();
     for(int i = 0; i < test_runs; ++i) {
         run();

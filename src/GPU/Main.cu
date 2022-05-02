@@ -10,8 +10,8 @@
 #include <algorithm>
 #include <iterator>
 
-#define WIDTH  1200
-#define HEIGHT 1200
+#define WIDTH  8
+#define HEIGHT 8
 
 //Check intersection of ray and sphere, solve for t
 __device__
@@ -119,7 +119,7 @@ void run(Vec * res, Sphere * scene, Vec LIGHT, int number_of_spheres) {
 
 int main() {
     // Setup for making spheres
-    int number_of_spheres = 9;
+    int number_of_spheres = 1;
     Sphere * scene = makeScene(number_of_spheres);
     //All pixels
     Vec * res;
@@ -135,7 +135,7 @@ int main() {
     dim3 threads(blocks_x, blocks_y);
 
     // Time-benchmarking
-    int test_runs = 1000;
+    int test_runs = 50;
     auto start = std::chrono::system_clock::now();
     
     for(int i = 0; i < test_runs; ++i) {
