@@ -10,9 +10,11 @@
 #include <chrono>
 #include "Scene.h"
 #include <chrono>
+#include <fstream>
+#include <string>
 // 400 800 1600 3200
-#define WIDTH  8
-#define HEIGHT 8
+#define WIDTH  400
+#define HEIGHT 400
 
 Sphere SPHERE; 
 Vec LIGHT;
@@ -136,19 +138,34 @@ void run() {
 
 int main() {
     LIGHT = Vec(-5,-5,10);
-    
-    makeScene(1, scene);
-
+    int spheres = 9;
+    makeScene(spheres, scene);
+    std::chrono::duration<double> runs[50]; // Se till att denna är samma som test_runs
     // Time-benchmarking
     int test_runs = 50; // 50
-    auto start = std::chrono::system_clock::now();
+    
     for(int i = 0; i < test_runs; ++i) {
+        auto start = std::chrono::system_clock::now();
         run();
+        auto end = std::chrono::system_clock::now();
+        std::chrono::duration<double> elapsed = end - start;
+        runs[i] = elapsed;
     }
     
-    auto end = std::chrono::system_clock::now();
-    std::chrono::duration<double> elapsed = end - start;
-    std::cerr << "CPU time: " << elapsed.count()/test_runs << " seconds" << std::endl;
-
+    //std::chrono::duration<double> elapsed = end - start;
+    std::chrono::duration<double> sum(0);
+    for(int i = 0; i < test_runs; ++i) {
+        sum += runs[i];
+    }
+    std::cerr << "CPU time: " << sum.count()/test_runs /*elapsed.count()/test_runs*/ << " seconds" << std::endl;
+    std::ofstream output;
+    int w = WIDTH;
+    int h = HEIGHT;
+    std::string name = "CPU_" + std::to_string(spheres) + "_" + std::to_string(w) + "x" + std::to_string(h) + ".csv";
+    output.open(name);
+    output << "Spheres,Resolution,Time\n";
+    for(auto time : runs) {
+        output << std::to_string(spheres) + "," + std::to_string(w) + "x" + std::to_string(h) + "," + std::to_string(time.count()) + "\n"; 
+    }
     return 0;
 }
