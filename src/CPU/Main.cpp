@@ -103,7 +103,7 @@ float clip(float f) {
 }
 
 void run() {
-    //std::cout << "P3\n" << WIDTH << ' ' << HEIGHT << "\n255\n";
+    std::cout << "P3\n" << WIDTH << ' ' << HEIGHT << "\n255\n";
     Vec O = Vec(0,0,2);
     for(int i = 0; i < WIDTH; ++i) {
         for(int j = HEIGHT - 1; j >= 0; --j) {
@@ -131,18 +131,18 @@ void run() {
                 ref *= traced.m_sphere.ref();
                 ++depth;
             }
-            //std::cout << clip(col.x()) << ' ' << clip(col.y()) << ' ' << clip(col.z()) << '\n';
+            std::cout << clip(col.x()) << ' ' << clip(col.y()) << ' ' << clip(col.z()) << '\n';
         } 
     }
 }
 
 int main() {
     LIGHT = Vec(-5,-5,10);
-    int spheres = 9;
+    int spheres = 1;
     makeScene(spheres, scene);
-    std::chrono::duration<double> runs[50]; // Se till att denna är samma som test_runs
+    std::chrono::duration<double> runs[1]; // Se till att denna är samma som test_runs
     // Time-benchmarking
-    int test_runs = 50; // 50
+    int test_runs = 1; // 50
     
     for(int i = 0; i < test_runs; ++i) {
         auto start = std::chrono::system_clock::now();
@@ -153,11 +153,12 @@ int main() {
     }
     
     //std::chrono::duration<double> elapsed = end - start;
+    /*
     std::chrono::duration<double> sum(0);
     for(int i = 0; i < test_runs; ++i) {
         sum += runs[i];
     }
-    std::cerr << "CPU time: " << sum.count()/test_runs /*elapsed.count()/test_runs*/ << " seconds" << std::endl;
+    std::cerr << "CPU time: " << sum.count()/test_runs << " seconds" << std::endl;
     std::ofstream output;
     int w = WIDTH;
     int h = HEIGHT;
@@ -166,6 +167,6 @@ int main() {
     output << "Spheres,Resolution,Time\n";
     for(auto time : runs) {
         output << std::to_string(spheres) + "," + std::to_string(w) + "x" + std::to_string(h) + "," + std::to_string(time.count()) + "\n"; 
-    }
+    }*/
     return 0;
 }
