@@ -13,8 +13,11 @@
 #include <fstream>
 #include <string>
 // 400 800 1600 3200
-#define WIDTH  400
-#define HEIGHT 400
+//#define WIDTH  400
+//#define HEIGHT 400
+
+int WIDTH;
+int HEIGHT;
 
 Sphere SPHERE; 
 Vec LIGHT;
@@ -144,29 +147,31 @@ int main() {
     // Time-benchmarking
     int test_runs = 1; // 50
     
-    for(int i = 0; i < test_runs; ++i) {
-        auto start = std::chrono::system_clock::now();
-        run();
-        auto end = std::chrono::system_clock::now();
-        std::chrono::duration<double> elapsed = end - start;
-        runs[i] = elapsed;
-    }
+    for(int x = 100; x < 101; ++x) {
+        WIDTH = x; HEIGHT = x;
+        for(int i = 0; i < test_runs; ++i) {
+            auto start = std::chrono::system_clock::now();
+            run();
+            auto end = std::chrono::system_clock::now();
+            std::chrono::duration<double> elapsed = end - start;
+            runs[i] = elapsed;
+        }
     
-    //std::chrono::duration<double> elapsed = end - start;
-    /*
-    std::chrono::duration<double> sum(0);
-    for(int i = 0; i < test_runs; ++i) {
-        sum += runs[i];
+        std::chrono::duration<double> sum(0);
+        for(int i = 0; i < test_runs; ++i) {
+            sum += runs[i];
+        }
+        std::cerr << "CPU time: " << sum.count()/test_runs << " seconds" << std::endl;
+        std::ofstream output;
+        int w = WIDTH;
+        int h = HEIGHT;
+        std::string name = "CPU_" + std::to_string(spheres) + "_" + std::to_string(w) + "x" + std::to_string(h) + ".csv";
+        output.open(name);
+        output << "Spheres,Resolution,Time\n";
+        for(auto time : runs) {
+            output << std::to_string(spheres) + "," + std::to_string(w) + "x" + std::to_string(h) + "," + std::to_string(time.count()) + "\n"; 
+        }
     }
-    std::cerr << "CPU time: " << sum.count()/test_runs << " seconds" << std::endl;
-    std::ofstream output;
-    int w = WIDTH;
-    int h = HEIGHT;
-    std::string name = "CPU_" + std::to_string(spheres) + "_" + std::to_string(w) + "x" + std::to_string(h) + ".csv";
-    output.open(name);
-    output << "Spheres,Resolution,Time\n";
-    for(auto time : runs) {
-        output << std::to_string(spheres) + "," + std::to_string(w) + "x" + std::to_string(h) + "," + std::to_string(time.count()) + "\n"; 
-    }*/
+
     return 0;
 }

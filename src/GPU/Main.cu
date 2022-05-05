@@ -9,9 +9,17 @@
 #include <vector>
 #include <algorithm>
 #include <iterator>
+#include <fstream>
+#include <string>
 
-#define WIDTH  8
-#define HEIGHT 8
+//#define WIDTH  8
+//#define HEIGHT 8
+
+__device__ int WIDTH;
+__device__ int HEIGHT;
+
+int c_WIDTH;
+int c_HEIGHT;
 
 //Check intersection of ray and sphere, solve for t
 __device__
@@ -39,7 +47,6 @@ Traced trace_ray(Ray & r, Sphere * scene, Vec LIGHT, int number_of_spheres) {
     float t = INFINITY;
     float t_object;
     int object_i = 0;
-    
     for(int i = 0; i < number_of_spheres; ++i) {
         t_object = intersect_sphere(scene[i], r);
         if(t_object < t) {
@@ -62,7 +69,8 @@ Traced trace_ray(Ray & r, Sphere * scene, Vec LIGHT, int number_of_spheres) {
             l[j] = intersect_sphere(object, Ray(M + 0.0001 * N, toL));
             ++j;
         }
-    }    
+        
+    } 
     if(sizeof(l)/sizeof(*l) != 0 && *std::min_element(std::begin(l), std::end(l)) < INFINITY) {
         return Traced();
     }
@@ -85,7 +93,8 @@ float clip(float f) {
 }
 
 __global__
-void run(Vec * res, Sphere * scene, Vec LIGHT, int number_of_spheres) {
+void run(Vec * res, Sphere * scene, Vec LIGHT, int number_of_spheres, int x) {
+    WIDTH = x; HEIGHT = x;
     Vec O = Vec(0,0,2); // Camera position
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     int j = threadIdx.y + blockIdx.y * blockDim.y;
@@ -128,36 +137,57 @@ int main() {
     //Setup for cuda-initialization
     int blocks_x = 8;
     int blocks_y = 8;
-    int N = HEIGHT * WIDTH;
-    cudaMallocManaged(&res, N*sizeof(Vec));
     
-    dim3 blocks(WIDTH/blocks_x+1, HEIGHT/blocks_y+1);
-    dim3 threads(blocks_x, blocks_y);
 
     // Time-benchmarking
-    int test_runs = 50;
-    auto start = std::chrono::system_clock::now();
-    
-    for(int i = 0; i < test_runs; ++i) {
-        run<<<blocks,threads>>>(res, scene, LIGHT, number_of_spheres);
-        cudaDeviceSynchronize();
-    }
+    std::chrono::duration<double> runs[1]; // Se till att denna är samma som test_runs
+    int test_runs = 1;
 
-    auto end = std::chrono::system_clock::now();
-    std::chrono::duration<double> elapsed = end - start;
-    std::cerr << "GPU time: " << elapsed.count()/test_runs << " seconds" << std::endl;
+    for(int x = 100; x < 101; ++x) {
+        c_HEIGHT = x; c_WIDTH = x;
+        int N = c_HEIGHT * c_WIDTH;
+        cudaMallocManaged(&res, N*sizeof(Vec));
     
+        dim3 blocks(c_WIDTH/blocks_x+1, c_HEIGHT/blocks_y+1);
+        dim3 threads(blocks_x, blocks_y);
+
+        for(int i = 0; i < test_runs; ++i) {
+            auto start = std::chrono::system_clock::now();
+            run<<<blocks,threads>>>(res, scene, LIGHT, number_of_spheres, x);
+            cudaDeviceSynchronize();
+            auto end = std::chrono::system_clock::now();
+            std::chrono::duration<double> elapsed = end - start;
+            runs[i] = elapsed;
+        }
+
+        std::chrono::duration<double> sum(0);
+        for(int i = 0; i < test_runs; ++i) {
+            sum += runs[i];
+        }
+        std::cerr << "GPU time: " << sum.count()/test_runs << " seconds" << std::endl;
+        std::ofstream output;
+        int w = c_WIDTH;
+        int h = c_HEIGHT;
+        std::string name = "GPU_" + std::to_string(number_of_spheres) + "_" + std::to_string(w) + "x" + std::to_string(h) + ".csv";
+        output.open(name);
+        output << "Spheres,Resolution,Time\n";
+        for(auto time : runs) {
+            output << std::to_string(number_of_spheres) + "," + std::to_string(w) + "x" + std::to_string(h) + "," + std::to_string(time.count()) + "\n"; 
+        }
+
+        //cudaFree(res);
+    }    
 
     // Pipe to file
-    /*
-    std::cout << "P3\n" << WIDTH << ' ' << HEIGHT << "\n255\n";
-    for(int i = 0; i < WIDTH; ++i) {
-        for(int j = HEIGHT - 1; j >= 0; --j) {
-            int index = j*WIDTH + i;
+    
+    std::cout << "P3\n" << c_WIDTH << ' ' << c_HEIGHT << "\n255\n";
+    for(int i = 0; i < c_WIDTH; ++i) {
+        for(int j = c_HEIGHT - 1; j >= 0; --j) {
+            int index = j*c_WIDTH + i;
             std::cout << clip(res[index].x()) << ' ' << clip(res[index].y()) << ' ' << clip(res[index].z()) << '\n';
         }
     }
-    */
+    
     // Cleanup
     cudaFree(scene);
     cudaFree(res);

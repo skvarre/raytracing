@@ -8,7 +8,7 @@ Sphere * makeScene(int scase) {
     switch(scase) {
         Sphere * scene;
         case 1:
-            cudaMallocManaged(&scene, sizeof(Sphere));
+            cudaMallocManaged(&scene, (int)scase*sizeof(Sphere));
             scene[0] = Sphere(Vec( 0,  0, -1),  0.45, Vec(1.0, 0.000, 0.000), 0.5);
             return scene;
         case 2:
