@@ -143,11 +143,11 @@ int main() {
     LIGHT = Vec(-5,-5,10);
     int spheres = 1;
     makeScene(spheres, scene);
-    std::chrono::duration<double> runs[1]; // Se till att denna är samma som test_runs
+    std::chrono::duration<double> runs[50]; // Se till att denna är samma som test_runs
     // Time-benchmarking
-    int test_runs = 1; // 50
+    int test_runs = 50; // 50
     
-    for(int x = 100; x < 101; ++x) {
+    for(int x = 1; x < 101; ++x) {
         WIDTH = x; HEIGHT = x;
         for(int i = 0; i < test_runs; ++i) {
             auto start = std::chrono::system_clock::now();
@@ -165,7 +165,7 @@ int main() {
         std::ofstream output;
         int w = WIDTH;
         int h = HEIGHT;
-        std::string name = "CPU_" + std::to_string(spheres) + "_" + std::to_string(w) + "x" + std::to_string(h) + ".csv";
+        std::string name = std::to_string(x) + "_CPU_" + std::to_string(spheres) + "_" + std::to_string(w) + "x" + std::to_string(h) + ".csv";
         output.open(name);
         output << "Spheres,Resolution,Time\n";
         for(auto time : runs) {
