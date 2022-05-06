@@ -1,0 +1,165 @@
+Flat profile:
+
+Each sample counts as 0.01 seconds.
+ no time accumulated
+
+  %   cumulative   self              self     total           
+ time   seconds   seconds    calls  Ts/call  Ts/call  name    
+  0.00      0.00     0.00 10916888     0.00     0.00  Vec::x() const
+  0.00      0.00     0.00 10864264     0.00     0.00  Vec::y() const
+  0.00      0.00     0.00 10864264     0.00     0.00  Vec::z() const
+  0.00      0.00     0.00  3182880     0.00     0.00  dot(Vec const&, Vec const&)
+  0.00      0.00     0.00  3069186     0.00     0.00  Vec::Vec(float, float, float)
+  0.00      0.00     0.00  3025008     0.00     0.00  Ray::B() const
+  0.00      0.00     0.00  2652412     0.00     0.00  __gnu_cxx::__normal_iterator<Sphere*, std::vector<Sphere, std::allocator<Sphere> > >::base() const
+  0.00      0.00     0.00  2016672     0.00     0.00  Sphere::r() const
+  0.00      0.00     0.00  1378832     0.00     0.00  operator-(Vec const&, Vec const&)
+  0.00      0.00     0.00  1326200     0.00     0.00  bool __gnu_cxx::operator!=<Sphere*, std::vector<Sphere, std::allocator<Sphere> > >(__gnu_cxx::__normal_iterator<Sphere*, std::vector<Sphere, std::allocator<Sphere> > > const&, __gnu_cxx::__normal_iterator<Sphere*, std::vector<Sphere, std::allocator<Sphere> > > const&)
+  0.00      0.00     0.00  1060960     0.00     0.00  __gnu_cxx::__normal_iterator<Sphere*, std::vector<Sphere, std::allocator<Sphere> > >::operator++()
+  0.00      0.00     0.00  1060960     0.00     0.00  Ray::A() const
+  0.00      0.00     0.00  1060960     0.00     0.00  Sphere::c() const
+  0.00      0.00     0.00  1060960     0.00     0.00  __gnu_cxx::__normal_iterator<Sphere*, std::vector<Sphere, std::allocator<Sphere> > >::operator*() const
+  0.00      0.00     0.00  1052480     0.00     0.00  __gnu_cxx::__normal_iterator<float*, std::vector<float, std::allocator<float> > >::base() const
+  0.00      0.00     0.00  1008336     0.00     0.00  intersect_sphere(Sphere const&, Ray const&)
+  0.00      0.00     0.00   947232     0.00     0.00  float* std::__niter_base<float*>(float*)
+  0.00      0.00     0.00   896736     0.00     0.00  operator*(float, Vec const&)
+  0.00      0.00     0.00   799971     0.00     0.00  Vec::Vec()
+  0.00      0.00     0.00   684112     0.00     0.00  std::vector<float, std::allocator<float> >::size() const
+  0.00      0.00     0.00   631488     0.00     0.00  std::move_iterator<float*>::base() const
+  0.00      0.00     0.00   631488     0.00     0.00  std::move_iterator<float*>::move_iterator(float*)
+  0.00      0.00     0.00   631488     0.00     0.00  decltype (__miter_base(({parm#1}.base)())) std::__miter_base<float*>(std::move_iterator<float*>)
+  0.00      0.00     0.00   631488     0.00     0.00  float* std::__miter_base<float*>(float*)
+  0.00      0.00     0.00   631488     0.00     0.00  std::move_iterator<float*> std::__make_move_if_noexcept_iterator<float, std::move_iterator<float*> >(float*)
+  0.00      0.00     0.00   631488     0.00     0.00  float&& std::forward<float>(std::remove_reference<float>::type&)
+  0.00      0.00     0.00   530486     0.00     0.00  __gnu_cxx::__normal_iterator<Sphere*, std::vector<Sphere, std::allocator<Sphere> > >::__normal_iterator(Sphere* const&)
+  0.00      0.00     0.00   526240     0.00     0.00  std::_Vector_base<float, std::allocator<float> >::_M_get_Tp_allocator()
+  0.00      0.00     0.00   473616     0.00     0.00  __gnu_cxx::new_allocator<float>::max_size() const
+  0.00      0.00     0.00   423120     0.00     0.00  norm(Vec)
+  0.00      0.00     0.00   423120     0.00     0.00  Vec::length()
+  0.00      0.00     0.00   420992     0.00     0.00  __gnu_cxx::__normal_iterator<float*, std::vector<float, std::allocator<float> > >::__normal_iterator(float* const&)
+  0.00      0.00     0.00   370488     0.00     0.00  Ray::Ray(Vec const&, Vec const&)
+  0.00      0.00     0.00   315744     0.00     0.00  std::_Vector_base<float, std::allocator<float> >::_M_get_Tp_allocator() const
+  0.00      0.00     0.00   315744     0.00     0.00  std::vector<float, std::allocator<float> >::max_size() const
+  0.00      0.00     0.00   315744     0.00     0.00  float* std::__copy_move<true, true, std::random_access_iterator_tag>::__copy_m<float>(float const*, float const*, float*)
+  0.00      0.00     0.00   315744     0.00     0.00  std::allocator_traits<std::allocator<float> >::max_size(std::allocator<float> const&)
+  0.00      0.00     0.00   315744     0.00     0.00  float* std::__uninitialized_copy<true>::__uninit_copy<std::move_iterator<float*>, float*>(std::move_iterator<float*>, std::move_iterator<float*>, float*)
+  0.00      0.00     0.00   315744     0.00     0.00  float* std::__copy_move_a<true, float*, float*>(float*, float*, float*)
+  0.00      0.00     0.00   315744     0.00     0.00  float* std::__copy_move_a2<true, float*, float*>(float*, float*, float*)
+  0.00      0.00     0.00   315744     0.00     0.00  float* std::uninitialized_copy<std::move_iterator<float*>, float*>(std::move_iterator<float*>, std::move_iterator<float*>, float*)
+  0.00      0.00     0.00   315744     0.00     0.00  float* std::__uninitialized_copy_a<std::move_iterator<float*>, float*, float>(std::move_iterator<float*>, std::move_iterator<float*>, float*, std::allocator<float>&)
+  0.00      0.00     0.00   315744     0.00     0.00  float* std::__uninitialized_move_if_noexcept_a<float*, float*, std::allocator<float> >(float*, float*, float*, std::allocator<float>&)
+  0.00      0.00     0.00   315744     0.00     0.00  float* std::copy<std::move_iterator<float*>, float*>(std::move_iterator<float*>, std::move_iterator<float*>, float*)
+  0.00      0.00     0.00   315744     0.00     0.00  operator+(Vec const&, Vec const&)
+  0.00      0.00     0.00   265243     0.00     0.00  std::vector<Sphere, std::allocator<Sphere> >::end()
+  0.00      0.00     0.00   265243     0.00     0.00  std::vector<Sphere, std::allocator<Sphere> >::begin()
+  0.00      0.00     0.00   263120     0.00     0.00  __gnu_cxx::__normal_iterator<float*, std::vector<float, std::allocator<float> > >::operator*() const
+  0.00      0.00     0.00   214144     0.00     0.00  float const& std::max<float>(float const&, float const&)
+  0.00      0.00     0.00   212616     0.00     0.00  trace_ray(Ray&)
+  0.00      0.00     0.00   210496     0.00     0.00  void std::_Destroy_aux<true>::__destroy<float*>(float*, float*)
+  0.00      0.00     0.00   210496     0.00     0.00  std::_Vector_base<float, std::allocator<float> >::_M_deallocate(float*, unsigned long)
+  0.00      0.00     0.00   210496     0.00     0.00  std::vector<float, std::allocator<float> >::end()
+  0.00      0.00     0.00   210496     0.00     0.00  std::vector<float, std::allocator<float> >::begin()
+  0.00      0.00     0.00   210496     0.00     0.00  void std::_Destroy<float*>(float*, float*)
+  0.00      0.00     0.00   210496     0.00     0.00  void std::_Destroy<float*, float>(float*, float*, std::allocator<float>&)
+  0.00      0.00     0.00   159993     0.00     0.00  Sphere::Sphere()
+  0.00      0.00     0.00   159992     0.00     0.00  Traced::Traced()
+  0.00      0.00     0.00   157879     0.00     0.00  operator new(unsigned long, void*)
+  0.00      0.00     0.00   157875     0.00     0.00  unsigned long const& std::max<unsigned long>(unsigned long const&, unsigned long const&)
+  0.00      0.00     0.00   157872     0.00     0.00  Vec::operator+=(Vec const&)
+  0.00      0.00     0.00   157872     0.00     0.00  __gnu_cxx::new_allocator<float>::deallocate(float*, unsigned long)
+  0.00      0.00     0.00   157872     0.00     0.00  __gnu_cxx::new_allocator<float>::allocate(unsigned long, void const*)
+  0.00      0.00     0.00   157872     0.00     0.00  void __gnu_cxx::new_allocator<float>::construct<float, float>(float*, float&&)
+  0.00      0.00     0.00   157872     0.00     0.00  __gnu_cxx::__normal_iterator<float*, std::vector<float, std::allocator<float> > >::operator++()
+  0.00      0.00     0.00   157872     0.00     0.00  __gnu_cxx::__normal_iterator<float*, std::vector<float, std::allocator<float> > >::difference_type __gnu_cxx::operator-<float*, std::vector<float, std::allocator<float> > >(__gnu_cxx::__normal_iterator<float*, std::vector<float, std::allocator<float> > > const&, __gnu_cxx::__normal_iterator<float*, std::vector<float, std::allocator<float> > > const&)
+  0.00      0.00     0.00   157872     0.00     0.00  bool __gnu_cxx::operator!=<float*, std::vector<float, std::allocator<float> > >(__gnu_cxx::__normal_iterator<float*, std::vector<float, std::allocator<float> > > const&, __gnu_cxx::__normal_iterator<float*, std::vector<float, std::allocator<float> > > const&)
+  0.00      0.00     0.00   157872     0.00     0.00  std::vector<float, std::allocator<float> >::_M_check_len(unsigned long, char const*) const
+  0.00      0.00     0.00   157872     0.00     0.00  std::_Vector_base<float, std::allocator<float> >::_M_allocate(unsigned long)
+  0.00      0.00     0.00   157872     0.00     0.00  std::allocator_traits<std::allocator<float> >::deallocate(std::allocator<float>&, float*, unsigned long)
+  0.00      0.00     0.00   157872     0.00     0.00  std::allocator_traits<std::allocator<float> >::allocate(std::allocator<float>&, unsigned long)
+  0.00      0.00     0.00   157872     0.00     0.00  void std::allocator_traits<std::allocator<float> >::construct<float, float>(std::allocator<float>&, float*, float&&)
+  0.00      0.00     0.00   157872     0.00     0.00  void std::vector<float, std::allocator<float> >::emplace_back<float>(float&&)
+  0.00      0.00     0.00   157872     0.00     0.00  void std::vector<float, std::allocator<float> >::_M_realloc_insert<float>(__gnu_cxx::__normal_iterator<float*, std::vector<float, std::allocator<float> > >, float&&)
+  0.00      0.00     0.00   157872     0.00     0.00  std::vector<float, std::allocator<float> >::push_back(float&&)
+  0.00      0.00     0.00   157872     0.00     0.00  std::remove_reference<float&>::type&& std::move<float&>(float&)
+  0.00      0.00     0.00   108896     0.00     0.00  float const& std::min<float>(float const&, float const&)
+  0.00      0.00     0.00   105248     0.00     0.00  bool __gnu_cxx::__ops::_Iter_less_iter::operator()<__gnu_cxx::__normal_iterator<float*, std::vector<float, std::allocator<float> > >, __gnu_cxx::__normal_iterator<float*, std::vector<float, std::allocator<float> > > >(__gnu_cxx::__normal_iterator<float*, std::vector<float, std::allocator<float> > >, __gnu_cxx::__normal_iterator<float*, std::vector<float, std::allocator<float> > >) const
+  0.00      0.00     0.00    52624     0.00     0.00  pow(Vec const&, float)
+  0.00      0.00     0.00    52624     0.00     0.00  Ray::P(float)
+  0.00      0.00     0.00    52624     0.00     0.00  Traced::Traced(Sphere, Vec, Vec, Vec)
+  0.00      0.00     0.00    52624     0.00     0.00  __gnu_cxx::new_allocator<float>::new_allocator()
+  0.00      0.00     0.00    52624     0.00     0.00  __gnu_cxx::new_allocator<float>::~new_allocator()
+  0.00      0.00     0.00    52624     0.00     0.00  __gnu_cxx::__ops::__iter_less_iter()
+  0.00      0.00     0.00    52624     0.00     0.00  bool __gnu_cxx::operator==<float*, std::vector<float, std::allocator<float> > >(__gnu_cxx::__normal_iterator<float*, std::vector<float, std::allocator<float> > > const&, __gnu_cxx::__normal_iterator<float*, std::vector<float, std::allocator<float> > > const&)
+  0.00      0.00     0.00    52624     0.00     0.00  Sphere::col() const
+  0.00      0.00     0.00    52624     0.00     0.00  Sphere::ref() const
+  0.00      0.00     0.00    52624     0.00     0.00  std::allocator<float>::allocator()
+  0.00      0.00     0.00    52624     0.00     0.00  std::allocator<float>::~allocator()
+  0.00      0.00     0.00    52624     0.00     0.00  std::_Vector_base<float, std::allocator<float> >::_Vector_impl::_Vector_impl()
+  0.00      0.00     0.00    52624     0.00     0.00  std::_Vector_base<float, std::allocator<float> >::_Vector_impl::~_Vector_impl()
+  0.00      0.00     0.00    52624     0.00     0.00  std::_Vector_base<float, std::allocator<float> >::_Vector_base()
+  0.00      0.00     0.00    52624     0.00     0.00  std::_Vector_base<float, std::allocator<float> >::~_Vector_base()
+  0.00      0.00     0.00    52624     0.00     0.00  std::vector<Sphere, std::allocator<Sphere> >::operator[](unsigned long)
+  0.00      0.00     0.00    52624     0.00     0.00  std::vector<float, std::allocator<float> >::vector()
+  0.00      0.00     0.00    52624     0.00     0.00  std::vector<float, std::allocator<float> >::~vector()
+  0.00      0.00     0.00    52624     0.00     0.00  __gnu_cxx::__normal_iterator<float*, std::vector<float, std::allocator<float> > > std::min_element<__gnu_cxx::__normal_iterator<float*, std::vector<float, std::allocator<float> > > >(__gnu_cxx::__normal_iterator<float*, std::vector<float, std::allocator<float> > >, __gnu_cxx::__normal_iterator<float*, std::vector<float, std::allocator<float> > >)
+  0.00      0.00     0.00    52624     0.00     0.00  __gnu_cxx::__normal_iterator<float*, std::vector<float, std::allocator<float> > > std::__min_element<__gnu_cxx::__normal_iterator<float*, std::vector<float, std::allocator<float> > >, __gnu_cxx::__ops::_Iter_less_iter>(__gnu_cxx::__normal_iterator<float*, std::vector<float, std::allocator<float> > >, __gnu_cxx::__normal_iterator<float*, std::vector<float, std::allocator<float> > >, __gnu_cxx::__ops::_Iter_less_iter)
+  0.00      0.00     0.00       18     0.00     0.00  std::move_iterator<Sphere*>::base() const
+  0.00      0.00     0.00       18     0.00     0.00  Sphere&& std::forward<Sphere>(std::remove_reference<Sphere>::type&)
+  0.00      0.00     0.00       12     0.00     0.00  std::vector<Sphere, std::allocator<Sphere> >::size() const
+  0.00      0.00     0.00       12     0.00     0.00  std::move_iterator<Sphere*>::move_iterator(Sphere*)
+  0.00      0.00     0.00       12     0.00     0.00  std::move_iterator<Sphere*> std::__make_move_if_noexcept_iterator<Sphere, std::move_iterator<Sphere*> >(Sphere*)
+  0.00      0.00     0.00       10     0.00     0.00  std::_Vector_base<Sphere, std::allocator<Sphere> >::_M_get_Tp_allocator()
+  0.00      0.00     0.00        9     0.00     0.00  __gnu_cxx::new_allocator<Sphere>::max_size() const
+  0.00      0.00     0.00        9     0.00     0.00  bool std::operator==<Sphere*>(std::move_iterator<Sphere*> const&, std::move_iterator<Sphere*> const&)
+  0.00      0.00     0.00        9     0.00     0.00  bool std::operator!=<Sphere*>(std::move_iterator<Sphere*> const&, std::move_iterator<Sphere*> const&)
+  0.00      0.00     0.00        6     0.00     0.00  std::_Vector_base<Sphere, std::allocator<Sphere> >::_M_get_Tp_allocator() const
+  0.00      0.00     0.00        6     0.00     0.00  std::vector<Sphere, std::allocator<Sphere> >::max_size() const
+  0.00      0.00     0.00        6     0.00     0.00  std::allocator_traits<std::allocator<Sphere> >::max_size(std::allocator<Sphere> const&)
+  0.00      0.00     0.00        6     0.00     0.00  Sphere* std::__uninitialized_copy<false>::__uninit_copy<std::move_iterator<Sphere*>, Sphere*>(std::move_iterator<Sphere*>, std::move_iterator<Sphere*>, Sphere*)
+  0.00      0.00     0.00        6     0.00     0.00  Sphere* std::uninitialized_copy<std::move_iterator<Sphere*>, Sphere*>(std::move_iterator<Sphere*>, std::move_iterator<Sphere*>, Sphere*)
+  0.00      0.00     0.00        6     0.00     0.00  Sphere* std::__uninitialized_copy_a<std::move_iterator<Sphere*>, Sphere*, Sphere>(std::move_iterator<Sphere*>, std::move_iterator<Sphere*>, Sphere*, std::allocator<Sphere>&)
+  0.00      0.00     0.00        6     0.00     0.00  Sphere* std::__uninitialized_move_if_noexcept_a<Sphere*, Sphere*, std::allocator<Sphere> >(Sphere*, Sphere*, Sphere*, std::allocator<Sphere>&)
+  0.00      0.00     0.00        4     0.00     0.00  Sphere::Sphere(Vec const&, float, Vec const&, float)
+  0.00      0.00     0.00        4     0.00     0.00  void __gnu_cxx::new_allocator<Sphere>::construct<Sphere, Sphere>(Sphere*, Sphere&&)
+  0.00      0.00     0.00        4     0.00     0.00  void std::_Destroy_aux<true>::__destroy<Sphere*>(Sphere*, Sphere*)
+  0.00      0.00     0.00        4     0.00     0.00  std::_Vector_base<Sphere, std::allocator<Sphere> >::_M_deallocate(Sphere*, unsigned long)
+  0.00      0.00     0.00        4     0.00     0.00  void std::allocator_traits<std::allocator<Sphere> >::construct<Sphere, Sphere>(std::allocator<Sphere>&, Sphere*, Sphere&&)
+  0.00      0.00     0.00        4     0.00     0.00  void std::vector<Sphere, std::allocator<Sphere> >::emplace_back<Sphere>(Sphere&&)
+  0.00      0.00     0.00        4     0.00     0.00  std::vector<Sphere, std::allocator<Sphere> >::push_back(Sphere&&)
+  0.00      0.00     0.00        4     0.00     0.00  std::remove_reference<Sphere&>::type&& std::move<Sphere&>(Sphere&)
+  0.00      0.00     0.00        4     0.00     0.00  void std::_Destroy<Sphere*>(Sphere*, Sphere*)
+  0.00      0.00     0.00        4     0.00     0.00  void std::_Destroy<Sphere*, Sphere>(Sphere*, Sphere*, std::allocator<Sphere>&)
+  0.00      0.00     0.00        3     0.00     0.00  __gnu_cxx::new_allocator<Sphere>::deallocate(Sphere*, unsigned long)
+  0.00      0.00     0.00        3     0.00     0.00  __gnu_cxx::new_allocator<Sphere>::allocate(unsigned long, void const*)
+  0.00      0.00     0.00        3     0.00     0.00  __gnu_cxx::__normal_iterator<Sphere*, std::vector<Sphere, std::allocator<Sphere> > >::difference_type __gnu_cxx::operator-<Sphere*, std::vector<Sphere, std::allocator<Sphere> > >(__gnu_cxx::__normal_iterator<Sphere*, std::vector<Sphere, std::allocator<Sphere> > > const&, __gnu_cxx::__normal_iterator<Sphere*, std::vector<Sphere, std::allocator<Sphere> > > const&)
+  0.00      0.00     0.00        3     0.00     0.00  std::move_iterator<Sphere*>::operator*() const
+  0.00      0.00     0.00        3     0.00     0.00  std::chrono::duration<long, std::ratio<1l, 1000000000l> >::count() const
+  0.00      0.00     0.00        3     0.00     0.00  std::vector<Sphere, std::allocator<Sphere> >::_M_check_len(unsigned long, char const*) const
+  0.00      0.00     0.00        3     0.00     0.00  std::_Vector_base<Sphere, std::allocator<Sphere> >::_M_allocate(unsigned long)
+  0.00      0.00     0.00        3     0.00     0.00  std::move_iterator<Sphere*>::operator++()
+  0.00      0.00     0.00        3     0.00     0.00  std::allocator_traits<std::allocator<Sphere> >::deallocate(std::allocator<Sphere>&, Sphere*, unsigned long)
+  0.00      0.00     0.00        3     0.00     0.00  std::allocator_traits<std::allocator<Sphere> >::allocate(std::allocator<Sphere>&, unsigned long)
+  0.00      0.00     0.00        3     0.00     0.00  void std::vector<Sphere, std::allocator<Sphere> >::_M_realloc_insert<Sphere>(__gnu_cxx::__normal_iterator<Sphere*, std::vector<Sphere, std::allocator<Sphere> > >, Sphere&&)
+  0.00      0.00     0.00        3     0.00     0.00  void std::_Construct<Sphere, Sphere>(Sphere*, Sphere&&)
+  0.00      0.00     0.00        3     0.00     0.00  Sphere* std::__addressof<Sphere>(Sphere&)
+  0.00      0.00     0.00        2     0.00     0.00  std::chrono::time_point<std::chrono::_V2::system_clock, std::chrono::duration<long, std::ratio<1l, 1000000000l> > >::time_since_epoch() const
+  0.00      0.00     0.00        2     0.00     0.00  std::chrono::duration<double, std::ratio<1l, 1l> >::count() const
+  0.00      0.00     0.00        1     0.00     0.00  run()
+  0.00      0.00     0.00        1     0.00     0.00  makeScene(int, std::vector<Sphere, std::allocator<Sphere> >&)
+  0.00      0.00     0.00        1     0.00     0.00  __gnu_cxx::new_allocator<Sphere>::new_allocator()
+  0.00      0.00     0.00        1     0.00     0.00  __gnu_cxx::new_allocator<Sphere>::~new_allocator()
+  0.00      0.00     0.00        1     0.00     0.00  std::allocator<Sphere>::allocator()
+  0.00      0.00     0.00        1     0.00     0.00  std::allocator<Sphere>::~allocator()
+  0.00      0.00     0.00        1     0.00     0.00  std::_Vector_base<Sphere, std::allocator<Sphere> >::_Vector_impl::_Vector_impl()
+  0.00      0.00     0.00        1     0.00     0.00  std::_Vector_base<Sphere, std::allocator<Sphere> >::_Vector_impl::~_Vector_impl()
+  0.00      0.00     0.00        1     0.00     0.00  std::_Vector_base<Sphere, std::allocator<Sphere> >::_Vector_base()
+  0.00      0.00     0.00        1     0.00     0.00  std::_Vector_base<Sphere, std::allocator<Sphere> >::~_Vector_base()
+  0.00      0.00     0.00        1     0.00     0.00  std::enable_if<std::chrono::__is_duration<std::chrono::duration<double, std::ratio<1l, 1l> > >::value, std::chrono::duration<double, std::ratio<1l, 1l> > >::type std::chrono::duration_cast<std::chrono::duration<double, std::ratio<1l, 1l> >, long, std::ratio<1l, 1000000000l> >(std::chrono::duration<long, std::ratio<1l, 1000000000l> > const&)
+  0.00      0.00     0.00        1     0.00     0.00  std::chrono::duration<double, std::ratio<1l, 1l> > std::chrono::__duration_cast_impl<std::chrono::duration<double, std::ratio<1l, 1l> >, std::ratio<1l, 1000000000l>, double, true, false>::__cast<long, std::ratio<1l, 1000000000l> >(std::chrono::duration<long, std::ratio<1l, 1000000000l> > const&)
+  0.00      0.00     0.00        1     0.00     0.00  std::chrono::duration<double, std::ratio<1l, 1l> >::duration<double, void>(double const&)
+  0.00      0.00     0.00        1     0.00     0.00  std::chrono::duration<double, std::ratio<1l, 1l> >::duration<long, std::ratio<1l, 1000000000l>, void>(std::chrono::duration<long, std::ratio<1l, 1000000000l> > const&)
+  0.00      0.00     0.00        1     0.00     0.00  std::chrono::duration<long, std::ratio<1l, 1000000000l> >::duration<long, void>(long const&)
+  0.00      0.00     0.00        1     0.00     0.00  std::common_type<std::chrono::duration<long, std::ratio<1l, 1000000000l> >, std::chrono::duration<long, std::ratio<1l, 1000000000l> > >::type std::chrono::operator-<std::chrono::_V2::system_clock, std::chrono::duration<long, std::ratio<1l, 1000000000l> >, std::chrono::duration<long, std::ratio<1l, 1000000000l> > >(std::chrono::time_point<std::chrono::_V2::system_clock, std::chrono::duration<long, std::ratio<1l, 1000000000l> > > const&, std::chrono::time_point<std::chrono::_V2::system_clock, std::chrono::duration<long, std::ratio<1l, 1000000000l> > > const&)
+  0.00      0.00     0.00        1     0.00     0.00  std::common_type<std::chrono::duration<long, std::ratio<1l, 1000000000l> >, std::chrono::duration<long, std::ratio<1l, 1000000000l> > >::type std::chrono::operator-<long, std::ratio<1l, 1000000000l>, long, std::ratio<1l, 1000000000l> >(std::chrono::duration<long, std::ratio<1l, 1000000000l> > const&, std::chrono::duration<long, std::ratio<1l, 1000000000l> > const&)
+  0.00      0.00     0.00        1     0.00     0.00  std::vector<Sphere, std::allocator<Sphere> >::vector()
+  0.00      0.00     0.00        1     0.00     0.00  main
