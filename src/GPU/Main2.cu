@@ -187,7 +187,7 @@ int main() {
         std::ofstream output;
         int w = c_WIDTH;
         int h = c_HEIGHT;
-        std::string name = std::to_string(x)"_GPU_" + std::to_string(number_of_spheres) + "_" + std::to_string(w) + "x" + std::to_string(h) + ".csv";
+        std::string name = std::to_string(x) + "_GPU_" + std::to_string(number_of_spheres) + "_" + std::to_string(w) + "x" + std::to_string(h) + ".csv";
         output.open(name);
         output << "Spheres,Resolution,Time\n";
         for(auto time : runs) {
