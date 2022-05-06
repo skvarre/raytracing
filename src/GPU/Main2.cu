@@ -162,7 +162,7 @@ int main() {
     std::chrono::duration<double> runs[50]; // Se till att denna är samma som test_runs
     int test_runs = 50;
 
-    for(int x = 1; x < 101; ++x) {
+    for(int x = 1; x < 1201; ++x) {
         c_HEIGHT = x; c_WIDTH = x;
         int N = c_HEIGHT * c_WIDTH;
         cudaMallocManaged(&res, N*sizeof(Vec));
