@@ -159,8 +159,8 @@ int main() {
     
 
     // Time-benchmarking
-    std::chrono::duration<double> runs[1]; // Se till att denna är samma som test_runs
-    int test_runs = 1;
+    std::chrono::duration<double> runs[50]; // Se till att denna är samma som test_runs
+    int test_runs = 50;
 
     for(int x = 1; x < 101; ++x) {
         c_HEIGHT = x; c_WIDTH = x;
@@ -194,11 +194,11 @@ int main() {
             output << std::to_string(number_of_spheres) + "," + std::to_string(w) + "x" + std::to_string(h) + "," + std::to_string(time.count()) + "\n"; 
         }
 
-        //cudaFree(res);
+        cudaFree(res);
     }    
 
     // Pipe to file
-    
+    /*
     std::cout << "P3\n" << c_WIDTH << ' ' << c_HEIGHT << "\n255\n";
     for(int i = 0; i < c_WIDTH; ++i) {
         for(int j = c_HEIGHT - 1; j >= 0; --j) {
@@ -206,10 +206,10 @@ int main() {
             std::cout << clip(res[index].x()) << ' ' << clip(res[index].y()) << ' ' << clip(res[index].z()) << '\n';
         }
     }
-    
+    */
     // Cleanup
     cudaFree(scene);
-    cudaFree(res);
+    //cudaFree(res);
     
     return 0;
 }
