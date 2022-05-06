@@ -106,7 +106,7 @@ float clip(float f) {
 }
 
 void run() {
-    std::cout << "P3\n" << WIDTH << ' ' << HEIGHT << "\n255\n";
+    //std::cout << "P3\n" << WIDTH << ' ' << HEIGHT << "\n255\n";
     Vec O = Vec(0,0,2);
     for(int i = 0; i < WIDTH; ++i) {
         for(int j = HEIGHT - 1; j >= 0; --j) {
@@ -134,7 +134,7 @@ void run() {
                 ref *= traced.m_sphere.ref();
                 ++depth;
             }
-            std::cout << clip(col.x()) << ' ' << clip(col.y()) << ' ' << clip(col.z()) << '\n';
+            //std::cout << clip(col.x()) << ' ' << clip(col.y()) << ' ' << clip(col.z()) << '\n';
         } 
     }
 }
