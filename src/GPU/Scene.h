@@ -18,9 +18,9 @@ Sphere * makeScene(int scase) {
             return scene;
         case 3:
             cudaMallocManaged(&scene, (int)scase*sizeof(Sphere));
-            scene[0] = Sphere(Vec( 0,  0,  0),  0.45, Vec(1.0, 0.000, 0.000), 0.5);
+            scene[0] = Sphere(Vec( 0,  1, -1),  0.45, Vec(1.0, 0.000, 0.000), 0.5);
             scene[1] = Sphere(Vec( 0, -1, -1),  0.45, Vec(0.0, 1.000, 0.000), 0.5);
-            scene[2] = Sphere(Vec( 0, -1, -1),  0.45, Vec(0.0, 0.000, 1.000), 0.5);
+            scene[2] = Sphere(Vec( 0,  0, -1),  0.45, Vec(0.0, 0.000, 1.000), 0.5);
             return scene;
         case 4:
             cudaMallocManaged(&scene, (int)scase*sizeof(Sphere));

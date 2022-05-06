@@ -15,9 +15,9 @@ void makeScene(int scase, std::vector<Sphere> & scene) {
             scene.push_back(Sphere(Vec( 0, -1, -1),  0.45, Vec(0.0, 1.000, 0.000), 0.5));
             break;
         case 3:
-            scene.push_back(Sphere(Vec( 0,  0,  0),  0.45, Vec(1.0, 0.000, 0.000), 0.5));
+            scene.push_back(Sphere(Vec( 0,  1, -1),  0.45, Vec(1.0, 0.000, 0.000), 0.5));
             scene.push_back(Sphere(Vec( 0, -1, -1),  0.45, Vec(0.0, 1.000, 0.000), 0.5));
-            scene.push_back(Sphere(Vec( 0, -1, -1),  0.45, Vec(0.0, 0.000, 1.000), 0.5));
+            scene.push_back(Sphere(Vec( 0,  0, -1),  0.45, Vec(0.0, 0.000, 1.000), 0.5));
             break;
         case 4:
             scene.push_back(Sphere(Vec(-1,  0,  -1), 0.45, Vec(1.0, 0.000, 0.000), 0.5));
