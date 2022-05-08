@@ -147,7 +147,7 @@ void run(Vec * res, Sphere * scene, Vec LIGHT, int number_of_spheres, int x) {
 
 int main() {
     // Setup for making spheres
-    int number_of_spheres = 1;
+    int number_of_spheres = 9;
     Sphere * scene = makeScene(number_of_spheres);
     //All pixels
     Vec * res;
@@ -162,7 +162,7 @@ int main() {
     std::chrono::duration<double> runs[50]; // Se till att denna är samma som test_runs
     int test_runs = 50;
 
-    for(int x = 1; x < 1201; ++x) {
+    for(int x = 1; x < 1001; ++x) {
         c_HEIGHT = x; c_WIDTH = x;
         int N = c_HEIGHT * c_WIDTH;
         cudaMallocManaged(&res, N*sizeof(Vec));

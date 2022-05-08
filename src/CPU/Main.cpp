@@ -141,13 +141,13 @@ void run() {
 
 int main() {
     LIGHT = Vec(-5,-5,10);
-    int spheres = 1;
+    int spheres = 7;
     makeScene(spheres, scene);
     std::chrono::duration<double> runs[50]; // Se till att denna är samma som test_runs
     // Time-benchmarking
     int test_runs = 50; // 50
     
-    for(int x = 1; x < 101; ++x) {
+    for(int x = 1; x < 401; ++x) {
         WIDTH = x; HEIGHT = x;
         for(int i = 0; i < test_runs; ++i) {
             auto start = std::chrono::system_clock::now();
