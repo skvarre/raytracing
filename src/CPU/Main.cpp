@@ -141,7 +141,7 @@ void run() {
 
 int main() {
     LIGHT = Vec(-5,-5,10);
-    int spheres = 7;
+    int spheres = 9;
     makeScene(spheres, scene);
     std::chrono::duration<double> runs[50]; // Se till att denna är samma som test_runs
     // Time-benchmarking
