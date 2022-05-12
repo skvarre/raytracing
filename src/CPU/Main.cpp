@@ -117,7 +117,7 @@ void run() {
             Vec rayO = O;
             Vec rayD = D;
             int depth = 0;
-            float ref = 1;
+            float reflection = 1;
             while(depth < 5) {
                 Ray OD = Ray(rayO, rayD);
                 Traced traced = trace_ray(OD);
@@ -130,7 +130,7 @@ void run() {
                 Vec col_ray = traced.m_col_ray;
                 rayO = M + 0.0001 * N;
                 rayD = norm(rayD - 2 * dot(rayD, N) * N);
-                col += ref * col_ray;
+                col += reflection * col_ray;
                 ref *= traced.m_sphere.ref();
                 ++depth;
             }
