@@ -147,7 +147,7 @@ void run(Vec * res, Sphere * scene, Vec LIGHT, int number_of_spheres, int x) {
 
 int main() {
     // Setup for making spheres
-    int number_of_spheres = 9;
+    int number_of_spheres = 1;
     Sphere * scene = makeScene(number_of_spheres);
     //All pixels
     Vec * res;
@@ -193,7 +193,6 @@ int main() {
         for(auto time : runs) {
             output << std::to_string(number_of_spheres) + "," + std::to_string(w) + "x" + std::to_string(h) + "," + std::to_string(time.count()) + "\n"; 
         }
-
         cudaFree(res);
     }    
 
