@@ -131,7 +131,7 @@ void run() {
                 rayO = M + 0.0001 * N;
                 rayD = norm(rayD - 2 * dot(rayD, N) * N);
                 col += reflection * col_ray;
-                ref *= traced.m_sphere.ref();
+                reflection *= traced.m_sphere.ref();
                 ++depth;
             }
             //std::cout << clip(col.x()) << ' ' << clip(col.y()) << ' ' << clip(col.z()) << '\n';
@@ -140,38 +140,40 @@ void run() {
 }
 
 int main() {
-    LIGHT = Vec(-5,-5,10);
-    int spheres = 9;
-    makeScene(spheres, scene);
-    std::chrono::duration<double> runs[50]; // Se till att denna är samma som test_runs
-    // Time-benchmarking
-    int test_runs = 50; // 50
+    for(int s = 1; s < 10; ++s) {
+        LIGHT = Vec(-5,-5,10);
+        int spheres = s;
+        makeScene(spheres, scene);
+        std::chrono::duration<double> runs[50]; // Se till att denna är samma som test_runs
+        // Time-benchmarking
+        int test_runs = 50; // 50
     
-    for(int x = 1; x < 401; ++x) {
-        WIDTH = x; HEIGHT = x;
-        for(int i = 0; i < test_runs; ++i) {
-            auto start = std::chrono::system_clock::now();
-            run();
-            auto end = std::chrono::system_clock::now();
-            std::chrono::duration<double> elapsed = end - start;
-            runs[i] = elapsed;
-        }
+        for(int x = 1000; x < 1001; ++x) {
+            WIDTH = x; HEIGHT = x;
+            for(int i = 0; i < test_runs; ++i) {
+                auto start = std::chrono::system_clock::now();
+                run();
+                auto end = std::chrono::system_clock::now();
+                std::chrono::duration<double> elapsed = end - start;
+                runs[i] = elapsed;
+            }
     
-        std::chrono::duration<double> sum(0);
-        for(int i = 0; i < test_runs; ++i) {
-            sum += runs[i];
+            std::chrono::duration<double> sum(0);
+            for(int i = 0; i < test_runs; ++i) {
+                sum += runs[i];
+            }
+            std::cerr << "CPU time: " << sum.count()/test_runs << " seconds" << std::endl;
+            std::ofstream output;
+            int w = WIDTH;
+            int h = HEIGHT;
+            std::string name = std::to_string(x) + "_CPU_" + std::to_string(spheres) + "_" + std::to_string(w) + "x" + std::to_string(h) + ".csv";
+            output.open(name);
+            output << "Spheres,Resolution,Time\n";
+            for(auto time : runs) {
+                output << std::to_string(spheres) + "," + std::to_string(w) + "x" + std::to_string(h) + "," + std::to_string(time.count()) + "\n"; 
+            }
         }
-        std::cerr << "CPU time: " << sum.count()/test_runs << " seconds" << std::endl;
-        std::ofstream output;
-        int w = WIDTH;
-        int h = HEIGHT;
-        std::string name = std::to_string(x) + "_CPU_" + std::to_string(spheres) + "_" + std::to_string(w) + "x" + std::to_string(h) + ".csv";
-        output.open(name);
-        output << "Spheres,Resolution,Time\n";
-        for(auto time : runs) {
-            output << std::to_string(spheres) + "," + std::to_string(w) + "x" + std::to_string(h) + "," + std::to_string(time.count()) + "\n"; 
-        }
-    }
+    }    
 
     return 0;
 }
